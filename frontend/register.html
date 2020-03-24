@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <!-- <form name="myform" action="http://localhost:8080/register" method="get">-->
+    <form name="myform" method="get" id="myform" onsubmit="return check()">
+        first name:
+        <input type="text" name="fn" id="fn">
+        </br>
+        last name:
+        <input type="text" name="ln" id="ln">
+        </br>
+        email id:
+        <input type="text" name="id" id="id">
+        </br>
+        phone number:
+        <input type="text" name="no" id="no">
+        </br>
+        username:
+        <input type="text" name="user" id="user">
+        </br>
+        password:
+        <input type="text" name="pass" id="pass">
+        </br>
+        confirm password:
+        <input type="text" name="cpass" id="cpass" onblur="checkEmail()">
+        </br>
+        <input type="submit" value="submit">
+    </form>
+
+    <script>
+       
+        function checkEmail() {
+            if (myform.pass.value != myform.cpass.value) {
+                document.getElementById('cpass').style.borderColor = "red";
+                alert('Those emails don\'t match!');
+                return false;
+            }
+             
+        }
+        function check()
+        {
+            //checkEmail();
+            var fd=document.getElementById("myform");
+            /*var formData = new FormData();
+            formData.append('first name',fd.fn.value);
+            formData.append('last name',fd.ln.value);
+            formData.append('email id',fd.id.value);
+            formData.append('phone number',fd.no.value);
+            formData.append('username',fd.user.value);
+            formData.append('password',fd.pass.value);
+            */
+           // var formData = new FormData(fd);
+
+           var formData={'first name':fd.fn.value,
+           'last name':fd.ln.value,
+           'email id':fd.id.value,
+           'phone number':fd.no.value,
+           'username':fd.user.value,
+           'password':fd.pass.value
+           
+        }
+                console.log(formData);
+                fetch('http://localhost:8080/register', {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((myJson) => {
+                        console.log(myJson);
+                    });
+
+            return false;
+
+        }
+    </script>
+
+</body>
+
+</html>

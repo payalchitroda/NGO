@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="showawards()">
+
+  <div class="navbar">
+    <a href="#home">Home</a>
+    <div class="subnav">
+      <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
+      <div class="subnav-content">
+        <a href="#events">Events</a><br>
+        <a href="#campagins">Camapaigns</a>
+      </div>
+    </div>
+    <a href="#donate">Donate</a>
+    <div class="subnav">
+      <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
+      <div class="subnav-content">
+        <a href="#contactus">Contact us</a><br>
+        <a href="#team">Team</a>
+      </div>
+    </div>
+    <a href="#signin">Signin</a>
+
+  </div>
+  <img class="background-tint" src="0.jpg" width=100% height="400">
+  <!--
+    <div class="search-box">
+      <input class="search-txt" type="text" name="" placeholder="Type to search">
+      <a class="search-btn" href="#">
+      </a>>
+    </div>
+  -->
+
+
+
+
+  <form class="example" action="action_page.php">
+    <input type="text" placeholder="Search.." name="search">
+    <button type="submit">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+
+  <p class="owner-detail" id="1">
+    <img class="owner" src="portfolio3.jpg"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
+    imperdiet, nulla et dictum interdum, nisi lorem egestas
+    odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae
+    massa.
+    Fusce luctus vestibulum augue ut aliquet. Mauris ante ligula, facilisis sed ornare eu, lobortis in odio. Mauris ante
+    ligula, facilisis sed ornare eu, lobortis in odio. Praesent convallis urna a lacus interdum ut hendrerit risus
+    congue.
+    Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. Fusce luctus vestibulum augue ut aliquet. Mauris ante
+    ligula, facilisis sed ornare eu, lobortis in odio. Mauris ante ligula, facilisis sed ornare eu, lobortis in
+    odio.Lorem
+    ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas
+    odio, vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, Lorem ipsum dolor sit amet, consectetur
+    adipiscing
+    elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula
+    venenatis
+    dolor. Maecenas nisl est, Praesent convallis urna a lacus interdum ut hendrerit risus congue. Nunc sagittis dictum
+    nisi,
+    sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui
+    eget
+    tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta. Cras
+    ac
+    leo purus. Mauris quis diam velit.</p>
+
+
+  <div class="achivements" id="awards"></div>
+  <div id="latestpublication">
+    <h1>Latest Publication</h1>
+    <div class="publication">
+      <img class="leftpublication" src="b1.jpg" alt="Pineapple">
+      <h3>John Doe</h3>
+    </div>
+    <div class="publication">
+      <img class="rightpublication" src="b2.jpg" alt="Pineapple">
+      <h3><b>John Doe</b></h3>
+    </div>
+    <div class="publication">
+      <img class="leftpublication" src="b3.jpg" alt="Pineapple">
+      <h3><b>John Doe</b></h3>
+    </div>
+    <p>View More</p>
+  </div>
+
+  <script>
+
+    function showawards() {
+
+      const a = document.getElementById("awards");
+      fetch("http://localhost:8080/awards", {
+
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((awards) => {
+          awards.forEach(function (award) {
+            const f = document.createElement('figure');
+            const fc = document.createElement('figcaption');
+            const img = document.createElement('img');
+            fc.innerHTML = award.item;
+            img.setAttribute("class", "award");
+            img.setAttribute("src", award.image);
+            f.appendChild(img);
+            f.appendChild(fc);
+            a.appendChild(f);
+          })
+
+        })
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
+
+
+  </script>
+</body>
+
+</html>

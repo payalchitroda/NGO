@@ -1,0 +1,66 @@
+<html>
+<style>
+        .formm {
+                border: 4px solid rgb(8, 8, 8);
+                border-radius: 8px;
+                width: 400px;
+                height: 200px;
+                background-color: rgb(134, 130, 122);
+                position: fixed;
+                top: 30%;
+                left: 40%;
+                color: white;
+
+        }
+
+        #loginform {
+                padding: 40px 50px;
+        }
+
+        input[type=text] {
+                width: 100%;
+        }
+
+        input[type=submit] {
+                width: 100%;
+                background-color: #4CAF50;
+                color: white;
+
+
+        }
+
+        input[type=button] {
+                width: 100%;
+                background-color: #4CAF50;
+                color: white;
+
+        }
+
+        input[type=submit]:hover {
+                background-color: #45a049;
+        }
+
+        input[type=button]:hover {
+                background-color: #45a049;
+        }
+</style>
+
+<body>
+
+        <div class="formm">
+                <form id="loginform" action="http://localhost:8080/login" method="post">
+                        username:<input type="text" name="user"></br>
+                        password:<input type="text" name="pass"></br>
+                        <input type="submit" value="submit"></br>
+                        <a href="http://localhost:5000/register">
+                                <input type="button" value="new user">
+                        </a>
+                        <a href="https://www.w3schools.com">Fogot Password</a>
+                </form>
+                
+
+        </div>
+
+</body>
+
+</html>
