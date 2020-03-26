@@ -1,83 +1,149 @@
 <!DOCTYPE html>
 <html>
+<style>
+    .form {
+        border: 4px solid rgb(8, 8, 8);
+        border-radius: 8px;
+        width: 400px;
+        height: 400px;
+        background-color: rgb(134, 130, 122);
+        position: fixed;
+        top: 30%;
+        left: 40%;
+        color: white;
+
+    }
+
+    #myform {
+        padding: 40px 50px;
+    }
+
+    input[type=text] {
+        width: 100%;
+    }
+
+    input[type=submit] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+
+    }
+
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+
+
+    input[type=button] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+
+    }
+
+    input[type=button]:hover {
+        background-color: #45a049;
+    }
+</style>
+
 
 <body>
-    <!-- <form name="myform" action="http://localhost:8080/register" method="get">-->
-    <form name="myform" method="get" id="myform" onsubmit="return check()">
-        first name:
-        <input type="text" name="fn" id="fn">
-        </br>
-        last name:
-        <input type="text" name="ln" id="ln">
-        </br>
-        email id:
-        <input type="text" name="id" id="id">
-        </br>
-        phone number:
-        <input type="text" name="no" id="no">
-        </br>
-        username:
-        <input type="text" name="user" id="user">
-        </br>
-        password:
-        <input type="text" name="pass" id="pass">
-        </br>
-        confirm password:
-        <input type="text" name="cpass" id="cpass" onblur="checkEmail()">
-        </br>
-        <input type="submit" value="submit">
-    </form>
-
+    <div class="form">
+        <form name="myform" id="myform" onsubmit="return check()">
+            Name:
+            <input type="text" name="name" id="name">
+            </br>
+            Address:
+            <input type="text" name="address" id="address">
+            </br>
+            email id:
+            <input type="text" name="emailid" id="emailid">
+            </br>
+            username:
+            <input type="text" name="username" id="username">
+            </br>
+            password:
+            <input type="text" name="password" id="password">
+            </br>
+            confirm password:
+            <input type="text" name="cpassword" id="cpassword" onblur="checkEmail()">
+            </br>
+            Mobileno:
+            <input type="text" name="mobilno" id="mobileno">
+            </br>
+            <input type="submit" value="submit">
+        </form>
+    </div>
     <script>
-       
+
+        function checkvalue() {
+            var flag = "false";
+            if (myform.name.value && myform.address.value && myform.mobileno.value && myform.emailid.value && myform.username.value && myform.password.value && myform.cpassword.value) {
+                flag = "true";
+
+            }
+            else {
+
+                alert('Enter all fields!');
+            }
+            return flag;
+
+        }
         function checkEmail() {
-            if (myform.pass.value != myform.cpass.value) {
-                document.getElementById('cpass').style.borderColor = "red";
-                alert('Those emails don\'t match!');
+            var flag="true";
+            if (myform.password.value != myform.cpassword.value) {
+                document.getElementById('cpassword').style.borderColor = "red";
+                alert('password doesn\'t match!');
                 return false;
             }
-             
-        }
-        function check()
-        {
-            //checkEmail();
-            var fd=document.getElementById("myform");
-            /*var formData = new FormData();
-            formData.append('first name',fd.fn.value);
-            formData.append('last name',fd.ln.value);
-            formData.append('email id',fd.id.value);
-            formData.append('phone number',fd.no.value);
-            formData.append('username',fd.user.value);
-            formData.append('password',fd.pass.value);
-            */
-           // var formData = new FormData(fd);
 
-           var formData={'first name':fd.fn.value,
-           'last name':fd.ln.value,
-           'email id':fd.id.value,
-           'phone number':fd.no.value,
-           'username':fd.user.value,
-           'password':fd.pass.value
-           
         }
-                console.log(formData);
-                fetch('http://localhost:8080/register', {
-                    method: 'POST', // or 'PUT'
+        function check() {
+
+            var flag = checkvalue();
+            var flag2 = checkEmail();
+            if (flag && flag2) {
+                var fd = document.getElementById("myform");
+
+                var formData = {
+                    'Name': fd.name.value,
+                    'Address': fd.address.value,
+                    'Mobileno': fd.mobileno.value,
+                    'Emailid': fd.emailid.value,
+                    'Username': fd.username.value,
+                    'Password': fd.password.value
+
+                }
+
+                fetch("http://localhost:8080/register", {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(formData),
+
                 })
                     .then((response) => {
-                        return response.json();
+                        return response.text();
                     })
-                    .then((myJson) => {
-                        console.log(myJson);
+                    .then((mytext) => {
+                        window.location.href = mytext;
+                        console.log(mytext);
+                    })
+
+                    .catch(function () {
+                        console.log("error");
                     });
 
-            return false;
+
+
+                return false;
+            }
 
         }
+
+
+
     </script>
 
 </body>

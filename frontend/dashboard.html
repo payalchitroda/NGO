@@ -1,0 +1,90 @@
+<html>
+
+<head>
+    <style>
+        .donatebutton {
+
+            background-color: #4CAF50;
+            color: white;
+            margin-left: 100px;
+            width: 50%
+        }
+
+        .donatebutton:hover {
+            background-color: #45a049;
+        }
+
+        .donate {
+            border: 4px solid rgb(8, 8, 8);
+            border-radius: 8px;
+            width: 400px;
+            height: 200px;
+            background-color: rgb(134, 130, 122);
+            position: fixed;
+            top: 30%;
+            left: 40%;
+            color: white;
+
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="donate" id="donate">
+        <div id="amount"></div>
+        <button id="donateamount" class="donatebutton" onclick="getAmount()">Donate</button>
+        <button class="donatebutton" onClick="location.href='login.html'">History</button>
+        <button class="donatebutton" onClick="location.href='ngo.html'">Logout</button>
+
+    </div>
+    </div>
+
+    <script>
+        var amount = document.getElementById("donate");
+        function getAmount() {
+            amount.innerHTML = '';
+            const i = document.createElement('input');
+            i.setAttribute("type", "text");
+            i.setAttribute("id", "donateamount");
+            i.setAttribute("name", "donateamountname");
+            i.setAttribute("placeholder", "enter amount to be donated");
+            i.setAttribute("size", "52px");
+            amount.appendChild(i);
+            const b = document.createElement('button');
+            b.innerHTML = 'Donate';
+            b.setAttribute("class", "donatebutton");
+            b.setAttribute("onclick", "payment()");
+            amount.appendChild(b);
+        }
+
+        function payment() {
+            var data = document.getElementById("donateamount").value;
+            if (data) {
+                amount.innerHTML = '';
+                const h = document.createElement('h4');
+                h.innerHTML = "donation amount" + data;
+                const b1 = document.createElement('button');
+                b1.innerHTML = 'Donate';
+                b1.setAttribute("class", "donatebutton");
+                b1.setAttribute("onclick", "window.location.href = 'http://localhost:8080/donate/"+data+"'");
+                const b2 = document.createElement('button');
+                b2.innerHTML = 'Back';
+                b2.setAttribute("class", "donatebutton");
+                b2.setAttribute("onclick", "getAmount()");
+                amount.appendChild(h);
+                amount.appendChild(b2);
+                amount.appendChild(b1);
+
+            }  
+           
+        }
+       
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 <html>
 <style>
-        .formm {
+        .form {
                 border: 4px solid rgb(8, 8, 8);
                 border-radius: 8px;
                 width: 400px;
@@ -21,7 +21,7 @@
                 width: 100%;
         }
 
-        input[type=submit] {
+        button {
                 width: 100%;
                 background-color: #4CAF50;
                 color: white;
@@ -47,19 +47,73 @@
 
 <body>
 
-        <div class="formm">
-                <form id="loginform" action="http://localhost:8080/login" method="post">
+        <div class="form">
+                <form id="loginform" onsubmit="return dashboard()">
                         username:<input type="text" name="user"></br>
                         password:<input type="text" name="pass"></br>
-                        <input type="submit" value="submit"></br>
+                        <button>Login</button></br>
                         <a href="http://localhost:5000/register">
                                 <input type="button" value="new user">
                         </a>
                         <a href="https://www.w3schools.com">Fogot Password</a>
                 </form>
-                
+
 
         </div>
+
+        <script>
+                function checkvalue() {
+                        var flag = "false";
+                        if (loginform.user.value && loginform.pass.value) {
+                                flag = "true";
+
+                        }
+                        else {
+
+                                alert('Enter all fields!');
+                        }
+                        return flag;
+
+                }
+                function dashboard() {
+                        var flag = checkvalue();
+                        if (flag) {
+                                var fd = document.getElementById("loginform");
+                                var formData = {
+                                        username: fd.user.value,
+                                        password: fd.pass.value
+
+                                }
+                                console.log(formData);
+                                fetch("http://localhost:8080/login", {
+                                        method: 'POST',
+                                        headers: {
+                                                'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify(formData),
+
+                                })
+                                        .then((response) => {
+                                                return response.text();
+                                        })
+                                        .then((mytext) => {
+                                                if (mytext == 'done') {
+                                                        window.location.href = "/dashboard";
+                                                }
+                                                else
+                                                {
+                                                        alert(mytext);
+                                                }
+                                        })
+
+                                        .catch(function () {
+                                                console.log("error");
+                                        });
+
+                                return false;
+                        }
+                }
+        </script>
 
 </body>
 
