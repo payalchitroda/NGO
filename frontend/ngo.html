@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="showawards()">
+<body id="body" onload="start()">
 
   <div class="navbar">
     <a href="#home">Home</a>
@@ -72,24 +72,134 @@
 
 
   <div class="achivements" id="awards"></div>
+
   <div id="latestpublication">
     <h1>Latest Publication</h1>
-    <div class="publication">
-      <img class="leftpublication" src="b1.jpg" alt="Pineapple">
-      <h3>John Doe</h3>
-    </div>
-    <div class="publication">
-      <img class="rightpublication" src="b2.jpg" alt="Pineapple">
-      <h3><b>John Doe</b></h3>
-    </div>
-    <div class="publication">
-      <img class="leftpublication" src="b3.jpg" alt="Pineapple">
-      <h3><b>John Doe</b></h3>
-    </div>
-    <p>View More</p>
+
   </div>
 
+  <div id="myModal" class="modal">
+
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Online Campaigns participation</p>
+      <input class="mid" type="text" id="email" placeholder="Email Id">
+      <br>
+      <br>
+      <button class="mid" id="support">I Support</button>
+    </div>
+
+  </div>
+
+
   <script>
+    var modal = document.getElementById("myModal");
+    var support = document.getElementById("support");
+
+    var span = document.getElementsByClassName("close")[0];
+
+
+    function popup() {
+      modal.style.display = "block";
+    }
+    support.onclick = function () {
+
+      var flag = checkvalue();
+      if (flag == "true") {
+
+        var data = {
+          email: document.getElementById("email").value,
+        }
+        console.log(data);
+        fetch("http://localhost:8080/support", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+
+        })
+          .then((response) => {
+            return response.text();
+          })
+          .then((mytext) => {
+            if (mytext == "done") {
+              modal.style.display = "none";
+            }
+          })
+
+          .catch(function () {
+            console.log("error");
+          });
+
+
+      }
+    }
+
+
+    
+    function checkvalue() {
+      var email = document.getElementById("email");
+      var flag = "false";
+      if (email.value) {
+        flag = "true";
+
+      }
+      else {
+
+        alert('Enter email to support!');
+      }
+      return flag;
+
+    }
+
+
+
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    function showarticles() {
+      const d = document.getElementById("latestpublication");
+      fetch("http://localhost:8080/recentarticles", {
+
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((articles) => {
+          const a = document.createElement('a');
+          a.setAttribute("href", "http://localhost:5000/articles");
+          a.innerHTML = "View More";
+          articles.forEach(function (article) {
+            const div = document.createElement('div');
+            const img = document.createElement('img');
+            const h = document.createElement('h3');
+
+            div.setAttribute("class", "publication");
+            img.setAttribute("class", "leftpublication");
+            img.setAttribute("src", article.image);
+
+            h.innerHTML = article.title;
+            div.appendChild(img);
+            div.appendChild(h);
+            d.appendChild(div);
+          })
+          d.appendChild(a);
+
+        })
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
 
     function showawards() {
 
@@ -119,6 +229,11 @@
         });
     }
 
+    function start() {
+      showawards();
+      showarticles();
+      popup();
+    }
 
 
   </script>

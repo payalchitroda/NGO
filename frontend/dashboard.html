@@ -40,7 +40,7 @@
 
     </div>
     </div>
-
+    
     <script>
         var amount = document.getElementById("donate");
         function getAmount() {
@@ -68,7 +68,7 @@
                 const b1 = document.createElement('button');
                 b1.innerHTML = 'Donate';
                 b1.setAttribute("class", "donatebutton");
-                b1.setAttribute("onclick", "window.location.href = 'http://localhost:8080/donate/"+data+"'");
+                b1.setAttribute("onclick", "window.location.href = 'http://localhost:8080/donate/" + data + "'");
                 const b2 = document.createElement('button');
                 b2.innerHTML = 'Back';
                 b2.setAttribute("class", "donatebutton");
@@ -76,11 +76,15 @@
                 amount.appendChild(h);
                 amount.appendChild(b2);
                 amount.appendChild(b1);
+                const b3 = document.createElement('button');
+                b3.setAttribute("onClick", "location.href='ngo.html'");
+                b3.innerHTML='Logout';
 
-            }  
-           
+
+            }
+
         }
-       
+        
 
 
     </script>

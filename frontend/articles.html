@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <style>
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      margin: auto;
+      text-align: center;
+      font-family: arial;
+
+    }
+
+    .title {
+      color: grey;
+      font-size: 18px;
+    }
+
+    img {
+      height: 200px;
+    }
+
+    button {
+      border: none;
+      outline: 0;
+      display: inline-block;
+      padding: 8px;
+      color: white;
+      background-color: #000;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+    }
+
+
+
+    .column {
+      float: left;
+      width: 32%;
+      padding: 0 10px;
+      margin-bottom: 40px;
+      cursor: pointer;
+
+    }
+
+    #heading {
+      width: 100%;
+      height: 100px;
+      background-color: rgb(173, 42, 42);
+      color: white;
+      text-align: center;
+      padding: 10px 0px;
+
+    }
+
+    #comments {
+      border: 2px solid black;
+      width: 90%;
+      margin: auto;
+
+    }
+
+    #com {
+      background-color: rgb(136, 133, 133);
+      font-size: large;
+    }
+
+    #email {
+      width: 100%;
+    }
+
+    .space {
+      padding: 10px 10px;
+    }
+
+    #comment {
+      row: 3;
+      width: 100%
+    }
+
+    #allcomments {
+      border: 2px solid black;
+      width: 90%;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body id="body" onload="showaarticles()">
+
+  <div id="heading">
+    <h1 id="articletitle">Articles</h1>
+  </div>
+  <br>
+  <br>
+
+
+
+  <div class="row" id="row"></div>
+  <div>
+    <img id="img" height="200px" weight="200px" float="left">
+    <div id="content"></div>
+  </div>
+  <br>
+  <br>
+  <div id="dummy">
+
+  </div>
+  <div id="displaycomments">
+
+  </div>
+  <script>
+
+    // function start() {
+    //   showaarticles();
+    //   showcomments();
+    // }
+
+    function showaarticles() {
+
+      const d = document.getElementById("row");
+      fetch("http://localhost:8080/articles", {
+
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((articles) => {
+          articles.forEach(function (article) {
+            console.log(article);
+
+            const d1 = document.createElement('div');
+            d1.setAttribute("class", "column");
+            d1.setAttribute("onclick", "article('" + article.title + "');");
+            const d2 = document.createElement('div');
+            d2.setAttribute("class", "card");
+            const i = document.createElement('img');
+            i.setAttribute("src", article.image);
+            i.setAttribute("style", "width:100%");
+            const h = document.createElement('h1');
+            h.setAttribute("id", "title");
+            h.innerHTML = article.title;
+            const p1 = document.createElement('p');
+            p1.setAttribute("class", "title");
+            p1.setAttribute("id", "author");
+            p1.innerHTML = article.author;
+            const p2 = document.createElement('p');
+            p2.setAttribute("id", "date");
+
+            p2.innerHTML = article.date;
+            const b = document.createElement('button');
+            b.innerHTML = article.category;
+            d1.appendChild(d2);
+            d2.appendChild(i);
+            d2.appendChild(h);
+            d2.appendChild(p1);
+            d2.appendChild(p2);
+            d2.appendChild(b);
+            d.appendChild(d1);
+
+          })
+
+        })
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
+    function article(ti) {
+      //"window.location.href = 'http://localhost:8080/article/" + article.title + "'"
+      // const b = document.getElementById("body");
+      // b.setAttribute("onload", "showcomments()");
+      const heading = document.getElementById("articletitle");
+      const content = document.getElementById("content");
+      const author = document.getElementById("author");
+      const img = document.getElementById("img");
+      const row = document.getElementById("row");
+      const dummy = document.getElementById("dummy");
+      console.log(ti);
+      data = {
+        title: ti,
+      }
+      fetch("http://localhost:8080/article", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+
+
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((articles) => {
+          articles.forEach(function (article) {
+            console.log(article);
+            row.innerHTML = "";
+            heading.innerHTML = article.title;
+            content.innerHTML = article.content;
+            img.setAttribute("src", article.image);
+
+            const comments = document.createElement('div');
+            comments.setAttribute("id", "comments");
+            const com = document.createElement('div');
+            com.setAttribute("id", "com");
+            com.innerHTML = "Leave a comment"
+            const c1 = document.createElement('div');
+            c1.setAttribute("class", "space");
+            const input = document.createElement('input');
+            input.setAttribute("id", "email");
+            input.setAttribute("placeholder", "Email id");
+            input.setAttribute("type", "text");
+            const c2 = document.createElement('div');
+            c2.setAttribute("class", "space");
+            const text = document.createElement('textarea');
+            text.setAttribute("id", "comment");
+            text.setAttribute("row", "3");
+            text.setAttribute("placeholder", "Comment");
+
+            const button = document.createElement('button');
+            button.setAttribute("onclick", "check('" + article.title + "')");
+            button.innerHTML = "submit";
+            const b = document.createElement('button');
+            b.setAttribute("onclick", "showcomments('" + article.title + "')");
+            b.innerHTML = "show comments";
+
+            c1.appendChild(input);
+            c2.appendChild(text);
+            comments.appendChild(com);
+            comments.appendChild(c1);
+            comments.appendChild(c2);
+            comments.appendChild(button);
+            comments.appendChild(b);
+            dummy.appendChild(comments);
+
+
+
+          })
+
+        })
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
+
+    function check(a) {
+      var flag = checkvalue();
+      if (flag=="true") {
+        comments(a);
+      }
+    }
+    function checkvalue() {
+      var flag = "false";
+      if (document.getElementById("email").value && document.getElementById("comment").value) {
+        flag = "true";
+        console.log(flag);
+
+      }
+      else {
+
+        alert('Enter all fields!');
+      }
+      return flag;
+
+    }
+
+    function comments(title) {
+      data = {
+        article: title,
+        email: document.getElementById("email").value,
+        comment: document.getElementById("comment").value,
+      }
+      fetch("http://localhost:8080/comment", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+
+
+      })
+        .then((response) => {
+          return response;
+        })
+
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
+
+    function showcomments(title) {
+
+      data = {
+        article: title,
+      }
+      var d = document.getElementById("displaycomments");
+      const ac = document.createElement('div');
+      ac.setAttribute("id", "allcomments");
+      d.innerHTML = "";
+
+      fetch("http://localhost:8080/comments", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((comm) => {
+
+          comm.forEach(function (comment) {
+            var a = comment.comments;
+            a.forEach(function (c) {
+
+              const hr = document.createElement('hr');
+              const div1 = document.createElement('div');
+              div1.innerHTML = c.Email;
+              const div2 = document.createElement('div');
+              div2.innerHTML = c.comment;
+              const div3 = document.createElement('div');
+              div3.innerHTML = c.date;
+              ac.appendChild(div1);
+              ac.appendChild(div2);
+              ac.appendChild(div3);
+              ac.appendChild(hr);
+              //console.log(c.Email);
+            })
+
+            ///console.log(a);
+
+          })
+          d.appendChild(ac);
+
+
+        })
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
+
+  </script>
+</body>
+
+</html>
