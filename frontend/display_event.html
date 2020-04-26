@@ -1,0 +1,328 @@
+[10:21 PM, 4/26/2020] Muskan Ddu: <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>DESCRIPTION</title>
+        <link rel="stylesheet" href="camp.css">
+        <link rel="stylesheet" href="header.css">
+        <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/b…
+[10:26 PM, 4/26/2020] Muskan Ddu: Change in header.css
+In class .navbar
+z-index:1;
+[10:26 PM, 4/26/2020] Muskan Ddu: display_campaign.html
+[10:26 PM, 4/26/2020] Muskan Ddu: <!DOCTYPE html>
+<html lang="en">
+    <head>
+      <title>DESCRIPTION</title>
+      <link rel="stylesheet" href="camp.css">
+      <link rel="stylesheet" href="header.css">
+      <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        
+        
+    </head>
+    <body onload="showDesc()">  
+  
+      <header>
+
+        <div class="navbar" id="myHeader">
+            <a href="http://localhost:5000/login">Login</a>
+        
+            <div class="subnav">
+              <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
+              <div class="subnav-content">
+                <a href="#contactus">Contact us</a><br>
+                <a href="#team">Team</a>
+              </div>
+            </div>
+            <a href="http://localhost:5000/login">Donate</a>
+            <div class="subnav">
+              <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
+              <div class="subnav-content">
+                <a href="http://localhost:5000/event">Events</a><br>
+                <a href="http://localhost:5000/campaign">Camapaigns</a>
+              </div>
+            </div>
+            <a href="http://localhost:5000/ngo">Home</a>
+           
+          </div>
+          <div class="navbar1">
+            <div style="float: right;"  class="open-divsearch" onclick="show()" onmouseout="hide()">
+              <input type="text" name="search" id="myInput" placeholder="search here" onkeyup="searchFunc()" style="width: 1753px;" onfocus="show()" autocomplete="off" class="open-search" >
+              <button type="submit" onclick="redir()"><i class="fa fa-search"></i></button>         
+              <div id="myTable" style="display:none;width: 1753px;" onmouseover="show()" class="table" ></div>
+            </div> 
+        </div>
+        
+          
+    </header>
+    <div class="container">
+      <span class="regis"  id="button1" onclick="openForm()" style="text-align:center"></span>
+    </div>
+<div class="container"  style="margin-top:30px;color: black;">
+<div>
+<div >
+<div id="image"></div>
+</div>
+<div >
+<div id="desc"></div> 
+</div>
+
+</div>
+</div>
+      <form id="regisform" class="regisDetail" action=#>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeForm()">&times;</a>
+        <br> <br>
+          
+          <input type="text" placeholder=" ENTER NAME" name ="name" required id="name">
+          <br>
+          <br>
+          <input type="text" placeholder=" ENTER EMAIL" name="email" required id="email ">
+           <br>
+          <br>
+          <input type="text" placeholder="MOBILE NUMBER" name="mob" required id="mob">
+          <br>
+          <br>
+         <input type="text" placeholder=" ENTER CITY" name="city" id="city">
+         <br><br>
+         <button type="button" class="btn btn-lg btn-success" onclick="registerFor()" style="text-align:center">REGISTER</button>
+      </form>
+      <br/><br/>
+<br/><br/><br/><br/>
+  <footer class="footer">
+      <a href="#">fb</i></a>
+      <a href="#">pintrest</i></a>
+      <a href="#">twitter</i></a>
+      <a href="#">flickr</i></a>
+      <a href="#">linkedin</i></a>
+      <p class="">
+       Powered by <a href="#" target="_blank">@</a>
+      </p>
+  </footer>
+  </body>
+<script>
+window.onscroll = function() {myFunction()};
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+function registerFor()
+{
+  var fd = document.getElementById("regisform");
+  console.log(fd.name.value);
+var formData = {
+    'name': fd.name.value,
+    'email': fd.email.value,
+    'mob': fd.mob.value,
+    'city':fd.city.value
+
+  }
+  fetch("http://localhost:3000/regisFor", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+
+                })
+                  .catch(function () {
+                        console.log("error");
+                    });
+                    document.getElementById("regisform").reset();
+                    document.getElementById("regisform").style.width = "0";
+                    
+}
+function openForm() {
+  document.getElementById("regisform").style.width = "350px";
+}
+
+function closeForm() {
+  document.getElementById("regisform").style.width = "0";
+}
+console.log(document.URL);
+var a1=document.URL.substring(35);
+console.log("a1 from link "+a1)
+const options={
+method:'POST'
+}
+function redir()
+{
+  var name=document.getElementById('myInput');
+  console.log("he;"+name.value);
+  fetch("http://localhost:3000/display_camp.html/"+name.value.toUpperCase(),options)
+  .then((response) => {
+    return response.json();
+  }).then((dis) => {
+    dis.forEach(function (disp) {
+      if(name.value.toUpperCase()==disp.c_name.toUpperCase())
+      {
+        console.log("dis "+disp.c_name)
+        window.location = "http://localhost:5000/display_camp?"+disp.c_name.toUpperCase();
+      }
+    })
+  })
+  .catch(function () {
+    console.log("error");
+  });
+  fetch("http://localhost:3000/display_event.html/"+name.value.toUpperCase(),options)
+  .then((response) => {
+    return response.json();
+  }).then((dis) => {
+    dis.forEach(function (disp) {
+      if(name.value.toUpperCase()==disp.e_name.toUpperCase())
+      {
+        window.location = "http://localhost:5000/display_event?"+disp.e_name.toUpperCase();
+      }
+    })
+  })
+  .catch(function () {
+    console.log("error");
+  });
+}
+
+
+function showDesc()
+{
+  fetch("http://localhost:3000/campFetch",options)
+  .then((response) => {
+    return response.json();
+  })
+  .then((campaign) => {
+    campaign.forEach(function (camp) {
+    attachFetch(camp);       
+  })
+  })
+  .catch(function () {
+  console.log("error");
+  });
+  fetch("http://localhost:3000/eventFetch",options)
+  .then((response) => {
+    return response.json();
+  })
+  .then((events) => {
+    events.forEach(function (event) {
+    attachFetch(event);        
+  })
+  })
+  .catch(function () {
+    console.log("error");
+  });
+  const a=document.getElementById("desc");
+  const b=document.getElementById("button1");
+  console.log("a1"+a1);
+  fetch("http://localhost:3000/display_camp.html/"+a1,options)
+  .then((response) => {
+    return response.json();
+  })
+  .then((dis) => {
+    dis.forEach(function (disp) {
+      const p = document.createElement('p');
+      const div = document.createElement('div');
+      const f = document.createElement('figure');
+      const fc = document.createElement('figcaption');
+      const img = document.createElement('img'); 
+      div.innerHTML = disp.description;
+      fc.setAttribute("name",disp.c_name);
+      fc.innerHTML = disp.c_name;
+      img.setAttribute("class", "camp");
+      img.setAttribute("src", disp.image);
+      img.setAttribute("width","550px");
+      img.setAttribute("height","450px");
+      if(disp.status=='U')
+      {
+        const ploc = document.createElement('p');
+        const ptime = document.createElement('p');
+        const loc = document.createElement('div');
+        const time = document.createElement('div');
+        const but = document.createElement('button');
+        loc.innerHTML="Location :"+disp.loc;
+        time.innerHTML="Time :"+disp.time;
+        but.innerHTML=" &#9776; Open Form for Register"; 
+        but.setAttribute("class","colorButton")
+        p.appendChild(loc);
+        p.appendChild(time);
+        b.appendChild(but);
+      }
+     f.appendChild(img);  
+      f.appendChild(fc);
+      p.appendChild(div);
+      a.appendChild(f);
+      a.appendChild(p);
+    })
+  })
+  .catch(function () {
+    console.log("error");
+  });
+}
+const show =()=>{
+        let myTable=document.getElementById('myTable');
+        myTable.style.display="";
+    }
+const hide =()=>{
+        let myTable=document.getElementById('myTable');
+        myTable.style.display="none";
+    }
+const searchFunc = ()=>{
+        let filter=document.getElementById('myInput').value.toUpperCase();
+        let myTable=document.getElementById('myTable');
+        let tr=myTable.getElementsByTagName('tr');
+        for(var i=0;i<tr.length;i++)
+        {
+            let td=tr[i].getElementsByTagName('td')[0];
+            if(td){
+                    let textvalue=td.textContent || td.innerHTML;
+                    if(textvalue.toUpperCase().indexOf(filter) > -1){
+                      tr[i].style.display="";
+                    }
+                    else{
+                      tr[i].style.display = "none";
+                    }
+                  }
+        }
+    }
+    function attachFetch(fetchAll)
+{
+    const a=document.getElementById("myTable");
+    const table = document.createElement('table');
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    const alink=document.createElement('a');
+    if(fetchAll.type=='C')
+    {
+      alink.setAttribute("href","http://localhost:5000/display_camp?"+fetchAll.c_name);
+      alink.innerText=fetchAll.c_name;
+    }
+    else if(fetchAll.type=='E')
+    {
+      alink.setAttribute("href","http://localhost:5000/display_event?"+fetchAll.e_name);
+      alink.innerText=fetchAll.e_name;
+    }
+    else
+    {
+      //logic of article
+    }
+    td.appendChild(alink);
+    tr.appendChild(td);
+    table.appendChild(tr);
+    a.appendChild(table);
+}
+    </script>
+</html>

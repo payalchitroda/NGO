@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Campaign</title>
+  <link rel="stylesheet" href="camp.css">
+  <link rel="stylesheet" href="header.css">
+  <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body onload="load()">
+  <header class="navbar1">
+
+    <div class="navbar" id="myHeader">
+      <a href="http://localhost:5000/login">Login</a>
+
+      <div class="subnav">
+        <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <a href="#contactus">Contact us</a><br>
+          <a href="#team">Team</a>
+        </div>
+      </div>
+      <a href="http://localhost:5000/login">Donate</a>
+      <div class="subnav">
+        <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <a href="http://localhost:5000/event">Events</a><br>
+          <a href="http://localhost:5000/campaign">Camapaigns</a>
+        </div>
+      </div>
+      <a href="http://localhost:5000/ngo">Home</a>
+    </div>
+    <div>
+
+      <div style="float: right;" class="open-divsearch" onclick="show()" onmouseout="hide()">
+        <input type="text" name="search" id="myInput" placeholder="search here" onkeyup="searchFunc()"
+          style="width: 1753px;" onfocus="show()" autocomplete="off" class="open-search">
+        <button type="submit" onclick="redir()"><i class="fa fa-search"></i></button>
+        <div id="myTable" style="display:none;width: 1753px;" onmouseover="show()" class="table"></div>
+      </div>
+
+    </div>
+
+
+
+  </header>
+
+
+
+
+  <div class="content">
+    <h1>Get Inspired by These Winning Environmental Social Media Campaigns</h1>
+    <p>We’ve previously covered brands that took a stand, publicly stating their brand values and detailed how this
+      impacted their brand's public perception.
+      In our current social zeitgeist, the political is often personal and consumers want brands to have the same values
+      as they do.
+      Here are five examples of environmental brands that are winning with their social media accounts, let's see what
+      we can learn from them.</p>
+    <p>
+      Social media isn’t just a place for animal videos, funny memes, and clever campaigns.<br />
+      Today, social media is the perfect global platform for brands and businesses to raise awareness (and money) for
+      causes that affect millions of people around the world.<br />
+      One of the most important causes? Our environment.<br />
+      With a growing interest surrounding brands that take their earthly responsibility seriously, we thought it would
+      be the optimal time to break down the
+      5 best environmental campaigns on social media in recent history.
+    </p>
+    <h1>5 Best Environmental Campaigns on Social Media</h1>
+    <p>1. J.J. Watt: Hurricane Harvey Fundraiser <br />
+      2. Patagonia: Black Friday Donation <br />
+      3. NASA: #AdoptThePlanet
+    </p>
+  </div>
+  <button class="first button" onclick="showImgUpcoming()">
+    <span>
+      <h1>Upcoming Campaign</h1>
+    </span>
+  </button>
+  <button class="second button" onclick="showImgFinished()">
+    <span>
+      <h1>Finished</h1>
+    </span>
+  </button>
+  <br><br></br>
+  <figure>
+    <div id="campaign"></div>
+  </figure>
+
+
+  <button class="open-button" onclick="openForm()">Suggestion</button>
+  <div class="popup" id="myForm">
+    <form class="form-container" id="feedback" action="#">
+      <h1>Feedback</h1>
+      <label for="msg" style="font-size: 60px;"><b>Message</b></label><br />
+      <input type="text" name="name" required placeholder="Enter Name" style="height:55px;width: 100%;"><br />
+      <input type="text" name="email" required placeholder="Enter email" style="height:55px;width: 100%;">
+      <textarea placeholder="Type suggestion.." name="msg" required></textarea>
+      <button type="submit" class="btn" onclick="send()">Send</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </form>
+  </div><br><br>
+
+  <footer class="footer">
+    <a href="#">fb</i></a>
+    <a href="#">pintrest</i></a>
+    <a href="#">twitter</i></a>
+    <a href="#">flickr</i></a>
+    <a href="#">linkedin</i></a>
+    <p class="">
+      Powered by <a href="#" target="_blank">@</a>
+    </p>
+  </footer>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+  window.onscroll = function () { myFunction() };
+
+  var header = document.getElementById("myHeader");
+  var sticky = header.offsetTop;
+  function myFunction() {
+    if (window.pageYOffset > sticky) {
+      header.classList.add("sticky");
+    } else {
+      header.classList.remove("sticky");
+    }
+  }
+  function send() {
+    var fd = document.getElementById("feedback");
+
+    var formData = {
+      'name': fd.name.value,
+      'email': fd.email.value,
+      'msg': fd.msg.value,
+
+    }
+    fetch("http://localhost:3000/acceptFeedback", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+
+    })
+      .catch(function () {
+        console.log("error");
+      });
+
+  }
+  function redir() {
+    var name = document.getElementById('myInput');
+    console.log("he;" + name.value);
+    fetch("http://localhost:3000/display_camp.html/" + name.value.toUpperCase(), options)
+      .then((response) => {
+        return response.json();
+      }).then((dis) => {
+        dis.forEach(function (disp) {
+          if (name.value.toUpperCase() == disp.c_name.toUpperCase()) {
+            console.log("dis " + disp.c_name)
+            window.location = "http://localhost:5000/display_camp?" + disp.c_name.toUpperCase();
+          }
+        })
+      })
+      .catch(function () {
+        console.log("error");
+      });
+    fetch("http://localhost:3000/display_event.html/" + name.value.toUpperCase(), options)
+      .then((response) => {
+        return response.json();
+      }).then((dis) => {
+        dis.forEach(function (disp) {
+          if (name.value.toUpperCase() == disp.e_name.toUpperCase()) {
+            window.location = "http://localhost:5000/display_event?" + disp.e_name.toUpperCase();
+          }
+        })
+      })
+      .catch(function () {
+        console.log("error");
+      });
+  }
+
+
+  function openForm() {
+    document.getElementById("myForm").style.display = "block";
+  }
+
+  function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+  }
+  const options = {
+    method: 'POST',
+    useNewUrlParser: true
+  }
+  const a = document.getElementById("campaign");
+  function attach(camp) {
+    const f = document.createElement('figure');
+    const fc = document.createElement('figcaption');
+    const img = document.createElement('img');
+    const alink = document.createElement('a');
+    alink.setAttribute("href", "http://localhost:5000/display_camp?" + camp.c_name);
+    console.log("alink " + alink)
+    fc.setAttribute("name", camp.c_name);
+    fc.innerHTML = camp.c_name;
+    alink.setAttribute("id", camp);
+    img.setAttribute("class", "camp");
+    img.setAttribute("src", camp.image);
+    img.setAttribute("width", "400px");
+    img.setAttribute("float", "left");
+    alink.appendChild(img);
+    f.appendChild(alink);
+    f.appendChild(fc);
+    a.appendChild(f);
+  }
+
+  function showImgUpcoming() {
+    var x = document.getElementById("campaign");
+    x.style.display = "none";
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+
+      $(document).ready(function () {
+        $("button").click(function () {
+          $("div#campaign").empty();
+        });
+      });
+
+      fetch("http://localhost:3000/campupcoming", options)
+        .then((response) => {
+          return response.json();
+        })
+        .then((campaign) => {
+          campaign.forEach(function (camp) {
+            attach(camp);
+          })
+        })
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
+  }
+  function showImgFinished() {
+    var x = document.getElementById("campaign");
+    x.style.display = "none";
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+
+      $(document).ready(function () {
+        $("button").click(function () {
+          $("div#campaign").empty();
+        });
+      });
+
+      fetch("http://localhost:3000/campfinished", options)
+        .then((response) => {
+          return response.json();
+        })
+        .then((campaign) => {
+          campaign.forEach(function (camp) {
+            attach(camp);
+          })
+        })
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
+  }
+  const show = () => {
+    let myTable = document.getElementById('myTable');
+    myTable.style.display = "";
+  }
+  const hide = () => {
+    let myTable = document.getElementById('myTable');
+    myTable.style.display = "none";
+  }
+  const searchFunc = () => {
+    let filter = document.getElementById('myInput').value.toUpperCase();
+    let myTable = document.getElementById('myTable');
+    let tr = myTable.getElementsByTagName('tr');
+    for (var i = 0; i < tr.length; i++) {
+      let td = tr[i].getElementsByTagName('td')[0];
+      if (td) {
+        let textvalue = td.textContent || td.innerHTML;
+        if (textvalue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        }
+        else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+  function attachFetch(fetchAll) {
+    const a = document.getElementById("myTable");
+    const table = document.createElement('table');
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    const alink = document.createElement('a');
+    if (fetchAll.type == 'C') {
+      alink.setAttribute("href", "http://localhost:5000/display_camp?" + fetchAll.c_name);
+      alink.innerText = fetchAll.c_name;
+    }
+    else if (fetchAll.type == 'E') {
+      alink.setAttribute("href", "http://localhost:5000/display_event?" + fetchAll.e_name);
+      alink.innerText = fetchAll.e_name;
+    }
+    else {
+      //logic of article
+    }
+    td.appendChild(alink);
+    tr.appendChild(td);
+    table.appendChild(tr);
+    a.appendChild(table);
+  }
+  function load() {
+
+    fetch("http://localhost:3000/campFetch", options)
+      .then((response) => {
+        return response.json();
+      })
+      .then((campaign) => {
+        campaign.forEach(function (camp) {
+          attachFetch(camp);
+        })
+      })
+      .catch(function () {
+        console.log("error");
+      });
+    fetch("http://localhost:3000/eventFetch", options)
+      .then((response) => {
+        return response.json();
+      })
+      .then((events) => {
+        events.forEach(function (event) {
+          attachFetch(event);
+        })
+      })
+      .catch(function () {
+        console.log("error");
+      });
+
+  }
+</script>
+
+</html>

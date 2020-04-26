@@ -53,36 +53,42 @@
 </head>
 
 <body>
-    <header>
+  <header class="navbar1">
 
-        <div class="navbar">
-            <a href="http://localhost:5000/login">Login</a>
+    <div class="navbar" id="myHeader">
+      <a href="http://localhost:5000/login">Login</a>
+
+      <div class="subnav">
+        <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <a href="#contactus">Contact us</a><br>
+          <a href="#team">Team</a>
+        </div>
+      </div>
+      <a href="http://localhost:5000/login">Donate</a>
+      <div class="subnav">
+        <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <a href="http://localhost:5000/event">Events</a><br>
+          <a href="http://localhost:5000/campaign">Camapaigns</a>
+        </div>
+      </div>
+      <a href="http://localhost:5000/ngo">Home</a> 
+    </div>
+    <div>
+      
+        <div style="float: right;"  class="open-divsearch" onclick="show()" onmouseout="hide()">
+          <input type="text" name="search" id="myInput" placeholder="search here" onkeyup="searchFunc()" style="width: 1753px;" onfocus="show()" autocomplete="off" class="open-search" >
+          <button type="submit" onclick="redir()"><i class="fa fa-search"></i></button>         
+          <div id="myTable" style="display:none;width: 1753px;" onmouseover="show()" class="table" ></div>
+        </div>
         
-            <div class="subnav">
-              <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
-              <div class="subnav-content">
-                <a href="#contactus">Contact us</a><br>
-                <a href="#team">Team</a>
-              </div>
-            </div>
-            <a href="http://localhost:5000/login">Donate</a>
-            <div class="subnav">
-              <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
-              <div class="subnav-content">
-                <a href="http://localhost:5000/event">Events</a><br>
-                <a href="http://localhost:5000/campaign">Camapaigns</a>
-              </div>
-            </div>
-            <a href="http://localhost:5000/ngo">Home</a>
-            <div class="open-divsearch" onclick="show()" onmouseout="hide()">
-              <input type="text" name="search" id="myInput" placeholder="search here" onkeyup="searchFunc()" style="width: 96%;" onfocus="show()" autocomplete="off" class="open-search" >
-              <button type="submit" onclick="redir()"><i class="fa fa-search"></i></button>         
-              <div id="myTable" style="display:none;width: 280px;" onmouseover="show()" class="table" ></div>
-            </div>
-          
-          </div>
-          
-    </header>
+    </div>
+  
+   
+   
+  </header>
+
     
     <div class="form">
         <form name="myform" id="myform" onsubmit="return check()">
@@ -239,7 +245,61 @@
       }
     }
   }
-
+  function attachFetch(fetchAll)
+{
+    const a=document.getElementById("myTable");
+    const table = document.createElement('table');
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    const alink=document.createElement('a');
+    if(fetchAll.type=='C')
+    {
+      alink.setAttribute("href","http://localhost:5000/display_camp?"+fetchAll.c_name);
+      alink.innerText=fetchAll.c_name;
+    }
+    else if(fetchAll.type=='E')
+    {
+      alink.setAttribute("href","http://localhost:5000/display_event?"+fetchAll.e_name);
+      alink.innerText=fetchAll.e_name;
+    }
+    else
+    {
+      //logic of article
+    }
+    td.appendChild(alink);
+    tr.appendChild(td);
+    table.appendChild(tr);
+    a.appendChild(table);
+}
+function load()
+{
+  
+    fetch("http://localhost:3000/campFetch",options)
+    .then((response) => {
+      return response.json();
+    })
+    .then((campaign) => {
+      campaign.forEach(function (camp) {
+      attachFetch(camp);       
+      })
+    })
+    .catch(function () {
+    console.log("error");
+     });
+    fetch("http://localhost:3000/eventFetch",options)
+    .then((response) => {
+      return response.json();
+    })
+    .then((events) => {
+      events.forEach(function (event) {
+      attachFetch(event);        
+    })
+  })
+  .catch(function () {
+    console.log("error");
+  });
+      
+}
     </script>
 <footer class="footer">
     <a href="#">fb</i></a>

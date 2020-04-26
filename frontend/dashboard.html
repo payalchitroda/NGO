@@ -1,196 +1,246 @@
 <html>
 
 <head>
-    <style>
-        .donatebutton {
+  <style>
+    .donatebutton {
 
-            background-color: #4CAF50;
-            color: white;
-            margin-left: 100px;
-            width: 50%
-        }
+      background-color: #4CAF50;
+      color: white;
+      margin-left: 100px;
+      width: 50%
+    }
 
-        .donatebutton:hover {
-            background-color: #45a049;
-        }
+    .donatebutton:hover {
+      background-color: #45a049;
+    }
 
-        .donate {
-            border: 4px solid rgb(8, 8, 8);
-            border-radius: 8px;
-            width: 400px;
-            height: 200px;
-            background-color: rgb(134, 130, 122);
-            position: fixed;
-            top: 30%;
-            left: 40%;
-            color: white;
+    .donate {
+      border: 4px solid rgb(8, 8, 8);
+      border-radius: 8px;
+      width: 400px;
+      height: 200px;
+      background-color: rgb(134, 130, 122);
+      position: fixed;
+      top: 30%;
+      left: 40%;
+      color: white;
 
 
-        }
-    </style>
-     <link rel="stylesheet" href="header.css">
-     <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
+    }
+  </style>
+  <link rel="stylesheet" href="header.css">
+  <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-    <header>
+  <header>
 
-        <div class="navbar">
-            <a href="http://localhost:5000/login">Login</a>
-        
-            <div class="subnav">
-              <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
-              <div class="subnav-content">
-                <a href="#contactus">Contact us</a><br>
-                <a href="#team">Team</a>
-              </div>
-            </div>
-            <a href="http://localhost:5000/login">Donate</a>
-            <div class="subnav">
-              <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
-              <div class="subnav-content">
-                <a href="http://localhost:5000/event">Events</a><br>
-                <a href="http://localhost:5000/campaign">Camapaigns</a>
-              </div>
-            </div>
-            <a href="http://localhost:5000/ngo">Home</a>
-            <div class="open-divsearch" onclick="show()" onmouseout="hide()">
-              <input type="text" name="search" id="myInput" placeholder="search here" onkeyup="searchFunc()" style="width: 96%;" onfocus="show()" autocomplete="off" class="open-search" >
-              <button type="submit" onclick="redir()"><i class="fa fa-search"></i></button>         
-              <div id="myTable" style="display:none;width: 280px;" onmouseover="show()" class="table" ></div>
-            </div>
-          
-          </div>
-          
-    </header>
-    <div class="donate" id="donate">
-        <div id="amount"></div>
-        <button id="donateamount" class="donatebutton" onclick="getAmount()">Donate</button>
-        <button class="donatebutton" onClick="location.href='login.html'">History</button>
-        <button class="donatebutton" onClick="location.href='ngo.html'">Logout</button>
+    <div class="navbar">
+      <a href="http://localhost:5000/login">Login</a>
+
+      <div class="subnav">
+        <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <a href="#contactus">Contact us</a><br>
+          <a href="#team">Team</a>
+        </div>
+      </div>
+      <a href="http://localhost:5000/login">Donate</a>
+      <div class="subnav">
+        <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <a href="http://localhost:5000/event">Events</a><br>
+          <a href="http://localhost:5000/campaign">Camapaigns</a>
+        </div>
+      </div>
+      <a href="http://localhost:5000/ngo">Home</a>
+      <div class="open-divsearch" onclick="show()" onmouseout="hide()">
+        <input type="text" name="search" id="myInput" placeholder="search here" onkeyup="searchFunc()"
+          style="width: 96%;" onfocus="show()" autocomplete="off" class="open-search">
+        <button type="submit" onclick="redir()"><i class="fa fa-search"></i></button>
+        <div id="myTable" style="display:none;width: 280px;" onmouseover="show()" class="table"></div>
+      </div>
 
     </div>
-    </div>
-    
-    <script>
-        var amount = document.getElementById("donate");
-        function getAmount() {
-            amount.innerHTML = '';
-            const i = document.createElement('input');
-            i.setAttribute("type", "text");
-            i.setAttribute("id", "donateamount");
-            i.setAttribute("name", "donateamountname");
-            i.setAttribute("placeholder", "enter amount to be donated");
-            i.setAttribute("size", "52px");
-            amount.appendChild(i);
-            const b = document.createElement('button');
-            b.innerHTML = 'Donate';
-            b.setAttribute("class", "donatebutton");
-            b.setAttribute("onclick", "payment()");
-            amount.appendChild(b);
-        }
 
-        function payment() {
-            var data = document.getElementById("donateamount").value;
-            if (data) {
-                amount.innerHTML = '';
-                const h = document.createElement('h4');
-                h.innerHTML = "donation amount" + data;
-                const b1 = document.createElement('button');
-                b1.innerHTML = 'Donate';
-                b1.setAttribute("class", "donatebutton");
-                b1.setAttribute("onclick", "window.location.href = 'http://localhost:3000/donate/" + data + "'");
-                const b2 = document.createElement('button');
-                b2.innerHTML = 'Back';
-                b2.setAttribute("class", "donatebutton");
-                b2.setAttribute("onclick", "getAmount()");
-                amount.appendChild(h);
-                amount.appendChild(b2);
-                amount.appendChild(b1);
-                const b3 = document.createElement('button');
-                b3.setAttribute("onClick", "location.href='ngo.html'");
-                b3.innerHTML='Logout';
+  </header>
+  <div class="donate" id="donate">
+    <div id="amount"></div>
+    <button id="donateamount" class="donatebutton" onclick="getAmount()">Donate</button>
+    <button class="donatebutton" onClick="location.href='login.html'">History</button>
+    <button class="donatebutton" onClick="location.href='ngo.html'">Logout</button>
+
+  </div>
+  </div>
+
+  <script>
+    var amount = document.getElementById("donate");
+    function getAmount() {
+      amount.innerHTML = '';
+      const i = document.createElement('input');
+      i.setAttribute("type", "text");
+      i.setAttribute("id", "donateamount");
+      i.setAttribute("name", "donateamountname");
+      i.setAttribute("placeholder", "enter amount to be donated");
+      i.setAttribute("size", "52px");
+      amount.appendChild(i);
+      const b = document.createElement('button');
+      b.innerHTML = 'Donate';
+      b.setAttribute("class", "donatebutton");
+      b.setAttribute("onclick", "payment()");
+      amount.appendChild(b);
+    }
+
+    function payment() {
+      var data = document.getElementById("donateamount").value;
+      if (data) {
+        amount.innerHTML = '';
+        const h = document.createElement('h4');
+        h.innerHTML = "donation amount" + data;
+        const b1 = document.createElement('button');
+        b1.innerHTML = 'Donate';
+        b1.setAttribute("class", "donatebutton");
+        b1.setAttribute("onclick", "window.location.href = 'http://localhost:3000/donate/" + data + "'");
+        const b2 = document.createElement('button');
+        b2.innerHTML = 'Back';
+        b2.setAttribute("class", "donatebutton");
+        b2.setAttribute("onclick", "getAmount()");
+        amount.appendChild(h);
+        amount.appendChild(b2);
+        amount.appendChild(b1);
+        const b3 = document.createElement('button');
+        b3.setAttribute("onClick", "location.href='ngo.html'");
+        b3.innerHTML = 'Logout';
 
 
+      }
+
+    }
+
+
+    function redir() {
+      var name = document.getElementById('myInput');
+      console.log("he;" + name.value);
+      fetch("http://localhost:3000/display_camp.html/" + name.value.toUpperCase(), options)
+        .then((response) => {
+          return response.json();
+        }).then((dis) => {
+          dis.forEach(function (disp) {
+            if (name.value.toUpperCase() == disp.c_name.toUpperCase()) {
+              console.log("dis " + disp.c_name)
+              window.location = "http://localhost:5000/display_camp?" + disp.c_name.toUpperCase();
             }
-
-        }
-
-
-        function redir() {
-    var name = document.getElementById('myInput');
-    console.log("he;" + name.value);
-    fetch("http://localhost:3000/display_camp.html/" + name.value.toUpperCase(), options)
-      .then((response) => {
-        return response.json();
-      }).then((dis) => {
-        dis.forEach(function (disp) {
-          if (name.value.toUpperCase() == disp.c_name.toUpperCase()) {
-            console.log("dis " + disp.c_name)
-            window.location = "http://localhost:5000/display_camp?" + disp.c_name.toUpperCase();
-          }
+          })
         })
-      })
-      .catch(function () {
-        console.log("error");
-      });
-    fetch("http://localhost:3000/display_event.html/" + name.value.toUpperCase(), options)
-      .then((response) => {
-        return response.json();
-      }).then((dis) => {
-        dis.forEach(function (disp) {
-          if (name.value.toUpperCase() == disp.e_name.toUpperCase()) {
-            window.location = "http://localhost:5000/display_event?" + disp.e_name.toUpperCase();
-          }
+        .catch(function () {
+          console.log("error");
+        });
+      fetch("http://localhost:3000/display_event.html/" + name.value.toUpperCase(), options)
+        .then((response) => {
+          return response.json();
+        }).then((dis) => {
+          dis.forEach(function (disp) {
+            if (name.value.toUpperCase() == disp.e_name.toUpperCase()) {
+              window.location = "http://localhost:5000/display_event?" + disp.e_name.toUpperCase();
+            }
+          })
         })
-      })
-      .catch(function () {
-        console.log("error");
-      });
-  }
+        .catch(function () {
+          console.log("error");
+        });
+    }
 
 
 
 
-  const show = () => {
-    let myTable = document.getElementById('myTable');
-    myTable.style.display = "";
-  }
-  const hide = () => {
-    let myTable = document.getElementById('myTable');
-    myTable.style.display = "none";
-  }
+    const show = () => {
+      let myTable = document.getElementById('myTable');
+      myTable.style.display = "";
+    }
+    const hide = () => {
+      let myTable = document.getElementById('myTable');
+      myTable.style.display = "none";
+    }
 
-  const searchFunc = () => {
-    let filter = document.getElementById('myInput').value.toUpperCase();
-    let myTable = document.getElementById('myTable');
-    let tr = myTable.getElementsByTagName('tr');
-    for (var i = 0; i < tr.length; i++) {
-      let td = tr[i].getElementsByTagName('td')[0];
-      if (td) {
-        let textvalue = td.textContent || td.innerHTML;
-        if (textvalue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        }
-        else {
-          tr[i].style.display = "none";
+    const searchFunc = () => {
+      let filter = document.getElementById('myInput').value.toUpperCase();
+      let myTable = document.getElementById('myTable');
+      let tr = myTable.getElementsByTagName('tr');
+      for (var i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName('td')[0];
+        if (td) {
+          let textvalue = td.textContent || td.innerHTML;
+          if (textvalue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          }
+          else {
+            tr[i].style.display = "none";
+          }
         }
       }
     }
-  }
-        
 
+    function attachFetch(fetchAll) {
+      const a = document.getElementById("myTable");
+      const table = document.createElement('table');
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      const alink = document.createElement('a');
+      if (fetchAll.type == 'C') {
+        alink.setAttribute("href", "http://localhost:5000/display_camp?" + fetchAll.c_name);
+        alink.innerText = fetchAll.c_name;
+      }
+      else if (fetchAll.type == 'E') {
+        alink.setAttribute("href", "http://localhost:5000/display_event?" + fetchAll.e_name);
+        alink.innerText = fetchAll.e_name;
+      }
+      else {
+        //logic of article
+      }
+      td.appendChild(alink);
+      tr.appendChild(td);
+      table.appendChild(tr);
+      a.appendChild(table);
+    }
+    function load() {
 
-    </script>
-<footer class="footer">
+      fetch("http://localhost:3000/campFetch", options)
+        .then((response) => {
+          return response.json();
+        })
+        .then((campaign) => {
+          campaign.forEach(function (camp) {
+            attachFetch(camp);
+          })
+        })
+        .catch(function () {
+          console.log("error");
+        });
+      fetch("http://localhost:3000/eventFetch", options)
+        .then((response) => {
+          return response.json();
+        })
+        .then((events) => {
+          events.forEach(function (event) {
+            attachFetch(event);
+          })
+        })
+        .catch(function () {
+          console.log("error");
+        });
+
+    }
+
+  </script>
+  <footer class="footer">
     <a href="#">fb</i></a>
     <a href="#">pintrest</i></a>
     <a href="#">twitter</i></a>
     <a href="#">flickr</i></a>
     <a href="#">linkedin</i></a>
     <p class="">
-     Powered by <a href="#" target="_blank">@</a>
+      Powered by <a href="#" target="_blank">@</a>
     </p>
   </footer>
 </body>

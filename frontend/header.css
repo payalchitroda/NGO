@@ -84,7 +84,7 @@ bottom: 0;
 width: 100%;
 background: #1abc9c;
 color: white;
-font-size: 30px;
+font-size: 25px;
 padding: 10px;
 text-align: center;
 }
@@ -122,4 +122,17 @@ text-align: center;
     font-size: 17px;
     border: none;
     cursor: pointer;
+  }
+
+  .navbar1 {
+    
+    background-color: #73817f;
+    overflow: hidden; 
+    z-index:1;
+    
+   }
+
+   td, th {
+    text-align: left;
+    padding: 8px;
   }

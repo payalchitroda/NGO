@@ -22,7 +22,7 @@
       height: 200px;
     }
 
-    button {
+    .button {
       border: none;
       outline: 0;
       display: inline-block;
@@ -87,43 +87,54 @@
       margin: auto;
     }
   </style>
-   <link rel="stylesheet" href="header.css">
-   <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
+ 
+  <link rel="stylesheet" href="header.css">
+  <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body id="body" onload="showaarticles()">
   
-  <header>
+  <header class="navbar1">
 
-    <div class="navbar">
-        <a href="http://localhost:5000/login">Login</a>
-    
-        <div class="subnav">
-          <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
-          <div class="subnav-content">
-            <a href="#contactus">Contact us</a><br>
-            <a href="#team">Team</a>
-          </div>
+    <div class="navbar" id="myHeader">
+      <a href="http://localhost:5000/login">Login</a>
+
+      <div class="subnav">
+        <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <a href="#contactus">Contact us</a><br>
+          <a href="#team">Team</a>
         </div>
-        <a href="http://localhost:5000/login">Donate</a>
-        <div class="subnav">
-          <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
-          <div class="subnav-content">
-            <a href="http://localhost:5000/event">Events</a><br>
-            <a href="http://localhost:5000/campaign">Camapaigns</a>
-          </div>
-        </div>
-        <a href="http://localhost:5000/ngo">Home</a>
-        <div class="open-divsearch" onclick="show()" onmouseout="hide()">
-          <input type="text" name="search" id="myInput" placeholder="search here" onkeyup="searchFunc()" style="width: 96%;" onfocus="show()" autocomplete="off" class="open-search" >
-          <button type="submit" onclick="redir()"><i class="fa fa-search"></i></button>         
-          <div id="myTable" style="display:none;width: 280px;" onmouseover="show()" class="table" ></div>
-        </div>
-      
       </div>
+      <a href="http://localhost:5000/login">Donate</a>
+      <div class="subnav">
+        <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
+        <div class="subnav-content">
+          <a href="http://localhost:5000/event">Events</a><br>
+          <a href="http://localhost:5000/campaign">Camapaigns</a>
+        </div>
+      </div>
+      <a href="http://localhost:5000/ngo">Home</a> 
+    </div>
+    <div>
       
-</header>
+        <div style="float: right;"  class="open-divsearch" onclick="show()" onmouseout="hide()">
+          <input type="text" name="search" id="myInput" placeholder="search here" onkeyup="searchFunc()" style="width: 1753px;" onfocus="show()" autocomplete="off" class="open-search" >
+          <button type="submit" onclick="redir()"><i class="fa fa-search"></i></button>         
+          <div id="myTable" style="display:none;width: 1753px;" onmouseover="show()" class="table" ></div>
+        </div>
+        
+    </div>
+  
+   
+   
+  </header>
+
+
+
   <div id="heading">
     <h1 id="articletitle">Articles</h1>
   </div>
@@ -145,6 +156,7 @@
   <div id="displaycomments">
 
   </div>
+  <br><br>
   
     
   
@@ -184,6 +196,7 @@
 
             p2.innerHTML = article.date;
             const b = document.createElement('button');
+            b.setAttribute("class", "button");
             b.innerHTML = article.category;
             d1.appendChild(d2);
             d2.appendChild(i);
@@ -254,9 +267,11 @@
             text.setAttribute("placeholder", "Comment");
 
             const button = document.createElement('button');
+            button.setAttribute("class", "button");
             button.setAttribute("onclick", "check('" + article.title + "')");
             button.innerHTML = "submit";
             const b = document.createElement('button');
+            b.setAttribute("class", "button");
             b.setAttribute("onclick", "showcomments('" + article.title + "')");
             b.innerHTML = "show comments";
 
@@ -441,7 +456,61 @@
       }
     }
   }
-
+  function attachFetch(fetchAll)
+{
+    const a=document.getElementById("myTable");
+    const table = document.createElement('table');
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    const alink=document.createElement('a');
+    if(fetchAll.type=='C')
+    {
+      alink.setAttribute("href","http://localhost:5000/display_camp?"+fetchAll.c_name);
+      alink.innerText=fetchAll.c_name;
+    }
+    else if(fetchAll.type=='E')
+    {
+      alink.setAttribute("href","http://localhost:5000/display_event?"+fetchAll.e_name);
+      alink.innerText=fetchAll.e_name;
+    }
+    else
+    {
+      //logic of article
+    }
+    td.appendChild(alink);
+    tr.appendChild(td);
+    table.appendChild(tr);
+    a.appendChild(table);
+}
+function load()
+{
+  
+    fetch("http://localhost:3000/campFetch",options)
+    .then((response) => {
+      return response.json();
+    })
+    .then((campaign) => {
+      campaign.forEach(function (camp) {
+      attachFetch(camp);       
+      })
+    })
+    .catch(function () {
+    console.log("error");
+     });
+    fetch("http://localhost:3000/eventFetch",options)
+    .then((response) => {
+      return response.json();
+    })
+    .then((events) => {
+      events.forEach(function (event) {
+      attachFetch(event);        
+    })
+  })
+  .catch(function () {
+    console.log("error");
+  });
+      
+}
 
   </script>
  <footer class="footer">

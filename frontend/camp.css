@@ -1,0 +1,275 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+    font-family: 'Sofia';font-size: 22px;
+}
+.header {
+  padding: 10px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+  font-size: 30px;
+  z-index:1;
+}
+
+.content {padding:20px;}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+.sticky + .content {
+  padding-top: 102px;
+}
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+.popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+.form-container {
+  max-width: 500px;
+  padding: 10px;
+  background-color: #1abc9c;
+}
+.form-container textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  resize: none;
+  min-height: 500px;
+}
+.form-container textarea:focus {
+  background-color: #ddd;
+  outline: none;
+}
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+.form-container .cancel {
+  background-color: red;
+}
+.footer
+{
+	 padding: 10px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+font-size: 30px;}
+.tree1{
+	float:right;
+}
+.tree{
+	float:left;
+}
+.container {
+ 
+  text-align: center;
+  color: white;
+}
+.box{
+  position: relative;
+  display: inline-block; /* Make the width of box same as image */
+}
+.box .text{
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 40%; /* Adjust this value to move the positioned div up and down */
+  text-align: center;
+  width: 60%; /* Set the width of the positioned div */
+}
+.box1{
+  position: relative;
+  display: inline-block; /* Make the width of box same as image */
+ 
+}
+.box1 .text{
+  position: absolute;      
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 40%; /* Adjust this value to move the positioned div up and down */
+  text-align: center;
+  width: 60%; /* Set the width of the positioned div */
+}
+	
+div.content{
+  padding-left: 50px; 
+  padding-right: 50px;
+}
+.button {
+  border-radius: 10px;
+  position: relative;
+  background-color:grey;
+  border: none;
+  font-size:10px;
+  color: #FFFFFF;
+  padding: 20px;
+  width: 150px;
+  
+  text-align: center;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.button:after {
+  content: "";
+  background: black;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px!important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s
+}
+
+.button:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s
+}
+
+.first{
+	
+	 margin-left:50px;
+	
+}
+
+.second{
+	float:right;
+	 margin-right:50px;
+	
+}
+figure {
+  display: inline-block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+div#awards{
+  float:left;
+  }
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  td, th {
+    text-align: left;
+    padding: 8px;
+  }
+  .l{
+    display:block;   
+  }
+  
+.regis{
+ 
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    position:absolute;
+    top:285px;
+    right: 308px;
+    width: 280px;
+}
+.regisDetail {
+  height: 50%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 200px;
+  left: 1000;
+ background-image: linear-gradient( #1abc9c,black);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.regisDetail a {
+  padding: 8px 8px 8px 30px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.regisDetail a:hover {
+  color: #f1f1f1;
+}
+
+.regisDetail .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .regisDetail {padding-top: 15px;}
+  .regisDetail a {font-size: 18px;}
+}
+.zind{
+  z-index: -1;
+}
+
+.colorButton{
+  border: 0;
+    line-height: 2.5;
+    padding: 0 20px;
+    font-size: 1rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 10px;
+    background: #1abc9c;
+    background-image: linear-gradient(to top left,
+                                      rgba(0, 0, 0, .2),
+                                      rgba(0, 0, 0, .2) 30%,
+                                      rgba(0, 0, 0, 0));
+    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
+                inset -2px -2px 3px rgba(0, 0, 0, .6);
+
+}
