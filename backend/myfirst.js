@@ -183,11 +183,11 @@ app.get('/recentarticles', (req, res) => {
 
 
 
-app.post('/article', (req, res) => {
+app.get('/article/:title', (req, res) => {
 
-  dbo.collection("articles").find({ title: req.body.title }, { projection: { title: 1, author: 1, date: 1, category: 1, image: 1, content: 1 } }).toArray(function (err, result) {
+  dbo.collection("articles").find({ title: req.params.title }, { projection: { title: 1, author: 1, date: 1, category: 1, image: 1, content: 1 } }).toArray(function (err, result) {
     if (err) throw err;
-    console.log("result is" + result);
+    console.log("result is" + req.params.title);
     res.send(result);
   });
 

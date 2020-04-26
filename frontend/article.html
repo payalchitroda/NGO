@@ -95,7 +95,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
-<body id="body" onload="showaarticles()">
+<body id="body" onload="article()">
   
   <header class="navbar1">
 
@@ -162,11 +162,23 @@
   
   <script>
 
+var b=document.URL.substring(30);
 
-    function showaarticles() {
+    
 
-      const d = document.getElementById("row");
-      fetch("http://localhost:3000/articles", {
+    function article() {
+       
+      //"window.location.href = 'http://localhost:8080/article/" + article.title + "'"
+      // const b = document.getElementById("body");
+      // b.setAttribute("onload", "showcomments()");
+      const heading = document.getElementById("articletitle");
+      const content = document.getElementById("content");
+      const author = document.getElementById("author");
+      const img = document.getElementById("img");
+      const row = document.getElementById("row");
+      const dummy = document.getElementById("dummy");
+     
+      fetch("http://localhost:3000/article/"+b, {
 
       })
         .then((response) => {
@@ -174,38 +186,49 @@
         })
         .then((articles) => {
           articles.forEach(function (article) {
-            const a = document.createElement('a');
-            a.setAttribute("href", "http://localhost:5000/article?" + article.title);
-            const d1 = document.createElement('div');
-            d1.setAttribute("class", "column");
-            console.log("http://localhost:5000/article?" + article.title);
-            const d2 = document.createElement('div');
-            d2.setAttribute("class", "card");
-            const i = document.createElement('img');
-            i.setAttribute("src", article.image);
-            i.setAttribute("style", "width:100%");
-            const h = document.createElement('h1');
-            h.setAttribute("id", "title");
-            h.innerHTML = article.title;
-            const p1 = document.createElement('p');
-            p1.setAttribute("class", "title");
-            p1.setAttribute("id", "author");
-            p1.innerHTML = article.author;
-            const p2 = document.createElement('p');
-            p2.setAttribute("id", "date");
+            console.log(article);
+            row.innerHTML = "";
+            heading.innerHTML = article.title;
+            content.innerHTML = article.content;
+            img.setAttribute("src", article.image);
 
-            p2.innerHTML = article.date;
+            const comments = document.createElement('div');
+            comments.setAttribute("id", "comments");
+            const com = document.createElement('div');
+            com.setAttribute("id", "com");
+            com.innerHTML = "Leave a comment"
+            const c1 = document.createElement('div');
+            c1.setAttribute("class", "space");
+            const input = document.createElement('input');
+            input.setAttribute("id", "email");
+            input.setAttribute("placeholder", "Email id");
+            input.setAttribute("type", "text");
+            const c2 = document.createElement('div');
+            c2.setAttribute("class", "space");
+            const text = document.createElement('textarea');
+            text.setAttribute("id", "comment");
+            text.setAttribute("row", "3");
+            text.setAttribute("placeholder", "Comment");
+
+            const button = document.createElement('button');
+            button.setAttribute("class", "button");
+            button.setAttribute("onclick", "check('" + article.title + "')");
+            button.innerHTML = "submit";
             const b = document.createElement('button');
             b.setAttribute("class", "button");
-            b.innerHTML = article.category;
-            d1.appendChild(d2);
-            d2.appendChild(i);
-            d2.appendChild(h);
-            d2.appendChild(p1);
-            d2.appendChild(p2);
-            d2.appendChild(b);
-            a.appendChild(d1);
-            d.appendChild(a);
+            b.setAttribute("onclick", "showcomments('" + article.title + "')");
+            b.innerHTML = "show comments";
+
+            c1.appendChild(input);
+            c2.appendChild(text);
+            comments.appendChild(com);
+            comments.appendChild(c1);
+            comments.appendChild(c2);
+            comments.appendChild(button);
+            comments.appendChild(b);
+            dummy.appendChild(comments);
+
+
 
           })
 
@@ -215,7 +238,106 @@
         });
     }
 
-    
+
+    function check(a) {
+      var flag = checkvalue();
+      if (flag=="true") {
+        comments(a);
+      }
+    }
+    function checkvalue() {
+      var flag = "false";
+      if (document.getElementById("email").value && document.getElementById("comment").value) {
+        flag = "true";
+        console.log(flag);
+
+      }
+      else {
+
+        alert('Enter all fields!');
+      }
+      return flag;
+
+    }
+
+    function comments(title) {
+      data = {
+        article: title,
+        email: document.getElementById("email").value,
+        comment: document.getElementById("comment").value,
+      }
+      fetch("http://localhost:3000/comment", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+
+
+      })
+        .then((response) => {
+          return response;
+        })
+
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
+
+    function showcomments(title) {
+
+      data = {
+        article: title,
+      }
+      var d = document.getElementById("displaycomments");
+      const ac = document.createElement('div');
+      ac.setAttribute("id", "allcomments");
+      d.innerHTML = "";
+
+      fetch("http://localhost:3000/comments", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((comm) => {
+
+          comm.forEach(function (comment) {
+            var a = comment.comments;
+            a.forEach(function (c) {
+
+              const hr = document.createElement('hr');
+              const div1 = document.createElement('div');
+              div1.innerHTML = c.Email;
+              const div2 = document.createElement('div');
+              div2.innerHTML = c.comment;
+              const div3 = document.createElement('div');
+              div3.innerHTML = c.date;
+              ac.appendChild(div1);
+              ac.appendChild(div2);
+              ac.appendChild(div3);
+              ac.appendChild(hr);
+              //console.log(c.Email);
+            })
+
+            ///console.log(a);
+
+          })
+          d.appendChild(ac);
+
+
+        })
+        .catch(function () {
+          console.log("error");
+        });
+    }
+
 
     function redir() {
     var name = document.getElementById('myInput');
@@ -335,8 +457,8 @@ function load()
 }
 
   </script>
-  <br/><br/><br>
-<br/><br/><br/><br/>
+  <br><br><br>
+<br><br><br><br>
  <footer class="footer">
   <a href="#">fb</i></a>
   <a href="#">pintrest</i></a>

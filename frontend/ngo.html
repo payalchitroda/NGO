@@ -173,6 +173,8 @@
           a.setAttribute("href", "http://localhost:5000/articles");
           a.innerHTML = "View More";
           articles.forEach(function (article) {
+            const link = document.createElement('a');
+            link.setAttribute("href", "http://localhost:5000/article?" + article.title);
             const div = document.createElement('div');
             const img = document.createElement('img');
             const h = document.createElement('h3');
@@ -184,7 +186,8 @@
             h.innerHTML = article.title;
             div.appendChild(img);
             div.appendChild(h);
-            d.appendChild(div);
+            link.appendChild(div);
+            d.appendChild(link);
           })
           d.appendChild(a);
 
