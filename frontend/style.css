@@ -253,3 +253,47 @@ body{
   text-decoration: none;
   cursor: pointer;
 }
+
+.footer
+{
+	 padding: 10px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+font-size: 30px;}
+
+
+.open-divsearch
+  {
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    
+  }
+  .open-search {
+  
+    padding: 5px 5px;
+    border: none;
+   
+   
+  }
+  .table
+  {
+    background-color:white;
+    z-index:1;
+    opacity:1;
+  }
+  .open-divsearch button:hover
+  {
+    background:#ccc;
+  }
+  .open-divsearch button
+  {
+    float: right;
+    padding: 4px 15px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+  }

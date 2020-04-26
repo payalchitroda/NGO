@@ -274,12 +274,92 @@ app.post('/support', (req, res) => {
 });
 
 
+app.post("/campupcoming", function (req, res)
+{
+   dbo.collection("campaign").find({"status":"U"},{ projection: { _id: 0,image: 1,c_name:1  } }).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+   });
+});
+app.post("/campfinished", function (req, res)
+{
+   dbo.collection("campaign").find({"status":"F"},{ projection: { _id: 0,image: 1,c_name:1  } }).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+   });
+});
+app.post("/display_camp.html/:url", function (req, res)
+{ 
+  var campname=req.params.url;
+   dbo.collection("campaign").find({"c_name":campname},{ projection: { _id: 0,description: 1,c_name:1,image:1,loc:1,time:1,status:1} }).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+   });
+});
+app.post("/eventupcoming", function (req, res)
+{
+   dbo.collection("events").find({"status":"U"},{ projection: { _id: 0,image: 1,e_name:1 } }).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+   });
+});
+app.post("/eventfinished", function (req, res)
+{
+   dbo.collection("events").find({"status":"F"},{ projection: { _id: 0,image: 1,e_name:1  } }).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+   });
+});
+app.post("/display_event.html/:url", function (req, res)
+{  
+  var eventname=req.params.url;
+   dbo.collection("events").find({"e_name":eventname},{ projection: { _id: 0,description: 1,e_name:1,image:1,loc:1,time:1,status:1} }).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+   });
+});
+app.post("/acceptFeedback", (req, res) => {
+   
+   console.log(req.body.name);
+   console.log(req.body.email);
+   console.log(req.body.msg);
+  dbo.collection("feedbacks").insertOne({name: req.body.name,email: req.body.email,msg: req.body.msg},function(err,res){
+  if(err)throw err;
+  });
+  console.log("inserted");
+});
+app.post("/campFetch", function (req, res)
+{
+   dbo.collection("campaign").find({},{ projection: { _id: 0,c_name:1,type:1} }).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+   });
+   
+});
+app.post("/eventFetch", function (req, res)
+{
+   dbo.collection("events").find({},{ projection: { _id: 0,e_name:1,type:1} }).toArray(function(err, result) {
+    if (err) throw err;
+    res.send(result);
+   });
+   
+});
+app.post("/regisFor", (req, res) => {
+   
+   console.log(req.body.name);
+   console.log(req.body.email);
+   console.log(req.body.mob);
+   console.log(req.body.city);
+  dbo.collection("regisfor").insertOne({name: req.body.name,email: req.body.email,mob: req.body.mob,city: req.body.city},function(err,res){
+  if(err)throw err;
+  });
+  console.log("inserted");
+});
 
 
 
 
-
-var server = app.listen(8080, function () { });
+var server = app.listen(3000, function () { });
 
 
 

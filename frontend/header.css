@@ -1,0 +1,125 @@
+.navbar {
+    overflow: hidden;
+   background-color: #73817f;
+      margin:5;
+      right: 30px;
+    
+   
+  }
+  
+  .navbar a {
+    float: right;
+    font-size: 25px;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+  }
+  
+  .subnav {
+    float: right;
+    overflow: hidden;
+    text-align: center;
+    
+    
+  }
+  
+  .subnav .subnavbtn {
+    font-size: 25px;  
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 20px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+    text-align: center;
+    
+    
+  }
+  
+  .navbar a:hover, .subnav:hover .subnavbtn {
+    background-color: rgb(224, 155, 26);
+     position: static;
+    
+   
+  }
+  
+  .subnav-content {
+    display: none;
+    left: 0;
+    background-color: rgb(224, 155, 26);
+    text-align: center;
+    
+   
+  
+  }
+  
+  .subnav-content a {
+    float: right;
+    background-color: rgb(224, 155, 26);
+    color:white;
+    text-decoration: none;
+    z-index: -1;
+    
+  }
+  
+  .subnav-content a:hover {
+    background-color: rgb(224, 155, 26);
+    color: black;
+  
+  }
+  
+  .subnav:hover .subnav-content {
+    display: block;
+    
+  }
+
+  .footer
+{
+
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background: #1abc9c;
+color: white;
+font-size: 30px;
+padding: 10px;
+text-align: center;
+}
+
+.open-divsearch
+  {
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    
+  }
+  .open-search {
+  
+    padding: 5px 5px;
+    border: none;
+   
+   
+  }
+  .table
+  {
+    background-color:white;
+    z-index:1;
+    opacity:1;
+  }
+  .open-divsearch button:hover
+  {
+    background:#ccc;
+  }
+  .open-divsearch button
+  {
+    float: right;
+    padding: 4px 15px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+  }

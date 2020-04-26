@@ -3,20 +3,15 @@
 
 <head>
   <link rel="stylesheet" href="style.css">
+  <link href='https://fonts.googleapis.com/css?family=Alice' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body id="body" onload="start()">
 
   <div class="navbar">
-    <a href="#home">Home</a>
-    <div class="subnav">
-      <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
-      <div class="subnav-content">
-        <a href="#events">Events</a><br>
-        <a href="#campagins">Camapaigns</a>
-      </div>
-    </div>
-    <a href="http://localhost:5000/login">Donate</a>
+    <a href="http://localhost:5000/login">Login</a>
+
     <div class="subnav">
       <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
       <div class="subnav-content">
@@ -24,28 +19,27 @@
         <a href="#team">Team</a>
       </div>
     </div>
-    <a href="http://localhost:5000/login">Login</a>
-
-  </div>
-  <img class="background-tint" src="0.jpg" width=100% height="400">
-  <!--
-    <div class="search-box">
-      <input class="search-txt" type="text" name="" placeholder="Type to search">
-      <a class="search-btn" href="#">
-      </a>>
+    <a href="http://localhost:5000/login">Donate</a>
+    <div class="subnav">
+      <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
+      <div class="subnav-content">
+        <a href="http://localhost:5000/event">Events</a><br>
+        <a href="http://localhost:5000/campaign">Camapaigns</a>
+      </div>
     </div>
-  -->
+    <a href="http://localhost:5000/ngo">Home</a>
+    
+  </div>
+  
+  <img class="background-tint" src="0.jpg" width=100% height="400">
+ 
+  <div class="open-divsearch" onclick="show()" onmouseout="hide()">
+    <input type="text" name="search" id="myInput" placeholder="search here" onkeyup="searchFunc()" style="width: 96%;" onfocus="show()" autocomplete="off" class="open-search" >
+    <button type="submit" onclick="redir()"><i class="fa fa-search"></i></button>         
+    <div id="myTable" style="display:none;width: 280px;" onmouseover="show()" class="table" ></div>
+  </div>
 
-
-
-
-  <form class="example" action="action_page.php">
-    <input type="text" placeholder="Search.." name="search">
-    <button type="submit">
-      <i class="fa fa-search"></i>
-    </button>
-  </form>
-
+  
   <p class="owner-detail" id="1">
     <img class="owner" src="portfolio3.jpg"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
     imperdiet, nulla et dictum interdum, nisi lorem egestas
@@ -111,7 +105,7 @@
           email: document.getElementById("email").value,
         }
         console.log(data);
-        fetch("http://localhost:8080/support", {
+        fetch("http://localhost:3000/support", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -168,7 +162,7 @@
 
     function showarticles() {
       const d = document.getElementById("latestpublication");
-      fetch("http://localhost:8080/recentarticles", {
+      fetch("http://localhost:3000/recentarticles", {
 
       })
         .then((response) => {
@@ -204,7 +198,7 @@
     function showawards() {
 
       const a = document.getElementById("awards");
-      fetch("http://localhost:8080/awards", {
+      fetch("http://localhost:3000/awards", {
 
       })
         .then((response) => {
@@ -236,7 +230,81 @@
     }
 
 
+    function redir() {
+    var name = document.getElementById('myInput');
+    console.log("he;" + name.value);
+    fetch("http://localhost:3000/display_camp.html/" + name.value.toUpperCase(), options)
+      .then((response) => {
+        return response.json();
+      }).then((dis) => {
+        dis.forEach(function (disp) {
+          if (name.value.toUpperCase() == disp.c_name.toUpperCase()) {
+            console.log("dis " + disp.c_name)
+            window.location = "http://localhost:5000/display_camp?" + disp.c_name.toUpperCase();
+          }
+        })
+      })
+      .catch(function () {
+        console.log("error");
+      });
+    fetch("http://localhost:3000/display_event.html/" + name.value.toUpperCase(), options)
+      .then((response) => {
+        return response.json();
+      }).then((dis) => {
+        dis.forEach(function (disp) {
+          if (name.value.toUpperCase() == disp.e_name.toUpperCase()) {
+            window.location = "http://localhost:5000/display_event?" + disp.e_name.toUpperCase();
+          }
+        })
+      })
+      .catch(function () {
+        console.log("error");
+      });
+  }
+
+
+
+
+  const show = () => {
+    let myTable = document.getElementById('myTable');
+    myTable.style.display = "";
+  }
+  const hide = () => {
+    let myTable = document.getElementById('myTable');
+    myTable.style.display = "none";
+  }
+
+  const searchFunc = () => {
+    let filter = document.getElementById('myInput').value.toUpperCase();
+    let myTable = document.getElementById('myTable');
+    let tr = myTable.getElementsByTagName('tr');
+    for (var i = 0; i < tr.length; i++) {
+      let td = tr[i].getElementsByTagName('td')[0];
+      if (td) {
+        let textvalue = td.textContent || td.innerHTML;
+        if (textvalue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        }
+        else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+
+
   </script>
+
+<footer class="footer">
+  <a href="#">fb</i></a>
+  <a href="#">pintrest</i></a>
+  <a href="#">twitter</i></a>
+  <a href="#">flickr</i></a>
+  <a href="#">linkedin</i></a>
+  <p class="">
+   Powered by <a href="#" target="_blank">@</a>
+  </p>
+</footer>
 </body>
 
 </html>
