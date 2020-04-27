@@ -8,7 +8,7 @@
         height: 400px;
         background-color: rgb(134, 130, 122);
         position: fixed;
-        top: 30%;
+       
         left: 40%;
         color: white;
 
@@ -52,11 +52,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body>
+<body onload="call()">
   <header class="navbar1">
 
     <div class="navbar" id="myHeader">
-      <a href="http://localhost:5000/login">Login</a>
+      <div id="loginnav"><a href="http://localhost:5000/login">Login</a>
+        <a href="http://localhost:5000/login">Donate</a></div>
+      <div id="logoutnav">
+        <a href="http://localhost:3000/logout">Logout</a>
+        <a href="http://localhost:5000/dashboard">Donate</a>
+      </div>
 
       <div class="subnav">
         <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
@@ -65,7 +70,7 @@
           <a href="#team">Team</a>
         </div>
       </div>
-      <a href="http://localhost:5000/login">Donate</a>
+   
       <div class="subnav">
         <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
         <div class="subnav-content">
@@ -89,7 +94,7 @@
    
   </header>
 
-    
+  <br/><br/><br/><br/><br/><br/><br/>
     <div class="form">
         <form name="myform" id="myform" onsubmit="return check()">
             Name:
@@ -116,8 +121,14 @@
             <input type="submit" value="submit">
         </form>
     </div>
+    <script src="search.js"></script>
+    <script src="menu.js"></script>
     <script>
-
+      function call()
+      {
+        menu();
+        load();
+      }
         function checkvalue() {
             var flag = "false";
             if (myform.name.value && myform.address.value && myform.mobileno.value && myform.emailid.value && myform.username.value && myform.password.value && myform.cpassword.value) {
@@ -219,87 +230,6 @@
 
 
 
-  const show = () => {
-    let myTable = document.getElementById('myTable');
-    myTable.style.display = "";
-  }
-  const hide = () => {
-    let myTable = document.getElementById('myTable');
-    myTable.style.display = "none";
-  }
-
-  const searchFunc = () => {
-    let filter = document.getElementById('myInput').value.toUpperCase();
-    let myTable = document.getElementById('myTable');
-    let tr = myTable.getElementsByTagName('tr');
-    for (var i = 0; i < tr.length; i++) {
-      let td = tr[i].getElementsByTagName('td')[0];
-      if (td) {
-        let textvalue = td.textContent || td.innerHTML;
-        if (textvalue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        }
-        else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  }
-  function attachFetch(fetchAll)
-{
-    const a=document.getElementById("myTable");
-    const table = document.createElement('table');
-    const tr = document.createElement('tr');
-    const td = document.createElement('td');
-    const alink=document.createElement('a');
-    if(fetchAll.type=='C')
-    {
-      alink.setAttribute("href","http://localhost:5000/display_camp?"+fetchAll.c_name);
-      alink.innerText=fetchAll.c_name;
-    }
-    else if(fetchAll.type=='E')
-    {
-      alink.setAttribute("href","http://localhost:5000/display_event?"+fetchAll.e_name);
-      alink.innerText=fetchAll.e_name;
-    }
-    else
-    {
-      //logic of article
-    }
-    td.appendChild(alink);
-    tr.appendChild(td);
-    table.appendChild(tr);
-    a.appendChild(table);
-}
-function load()
-{
-  
-    fetch("http://localhost:3000/campFetch",options)
-    .then((response) => {
-      return response.json();
-    })
-    .then((campaign) => {
-      campaign.forEach(function (camp) {
-      attachFetch(camp);       
-      })
-    })
-    .catch(function () {
-    console.log("error");
-     });
-    fetch("http://localhost:3000/eventFetch",options)
-    .then((response) => {
-      return response.json();
-    })
-    .then((events) => {
-      events.forEach(function (event) {
-      attachFetch(event);        
-    })
-  })
-  .catch(function () {
-    console.log("error");
-  });
-      
-}
     </script>
     <br/><br/><br>
     <br/><br/><br/><br/>

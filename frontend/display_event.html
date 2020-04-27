@@ -13,14 +13,19 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
        
     </head>
-    <body onload="showDesc()"> 
+    <body onload="call()"> 
    
 
 
           <header>
 
             <div class="navbar" id="myHeader">
-              <a href="http://localhost:5000/login">Login</a>
+              <div id="loginnav"><a href="http://localhost:5000/login">Login</a>
+                <a href="http://localhost:5000/login">Donate</a></div>
+              <div id="logoutnav">
+                <a href="http://localhost:3000/logout">Logout</a>
+                <a href="http://localhost:5000/dashboard">Donate</a>
+              </div>
         
               <div class="subnav">
                 <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
@@ -29,7 +34,7 @@
                   <a href="#team">Team</a>
                 </div>
               </div>
-              <a href="http://localhost:5000/login">Donate</a>
+          
               <div class="subnav">
                 <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
                 <div class="subnav-content">
@@ -96,7 +101,14 @@
   </footer>
     </body>
     <script src="search.js"></script>
+    <script src="menu.js"></script>
     <script>
+
+      function call()
+      {
+        showDesc();
+        menu();
+      }
 
 window.onscroll = function() {myFunction()};
 
@@ -143,36 +155,10 @@ function openForm() {
 function closeForm() {
   document.getElementById("regisform").style.width = "0";
 }
-const options={
-	method:'POST'
-}
 
 function showDesc()
 {    
-  fetch("http://localhost:3000/campFetch",options)
-    .then((response) => {
-      return response.json();
-    })
-    .then((campaign) => {
-      campaign.forEach(function (camp) {
-      attachFetch(camp);       
-      })
-    })
-    .catch(function () {
-    console.log("error");
-     });
-    fetch("http://localhost:3000/eventFetch",options)
-    .then((response) => {
-      return response.json();
-    })
-    .then((events) => {
-      events.forEach(function (event) {
-      attachFetch(event);        
-    })
-  })
-  .catch(function () {
-    console.log("error");
-  });
+  load();
 const a=document.getElementById("desc");   
 const b=document.getElementById("button1");
 var a1=document.URL.substring(36); 

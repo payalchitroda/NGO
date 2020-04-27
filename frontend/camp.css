@@ -32,7 +32,7 @@ body {
   cursor: pointer;
   opacity: 0.8;
   position: fixed;
-  bottom: 23px;
+  bottom: 150px;
   right: 28px;
   width: 280px;
 }
@@ -209,7 +209,7 @@ div#awards{
     border: none;
     cursor: pointer;
     position:absolute;
-    top:285px;
+    
     right: 308px;
     width: 280px;
 }

@@ -1,3 +1,6 @@
+const options={
+    method:"post"
+}
 function redir() {
     var name = document.getElementById('myInput');
     console.log("he;" + name.value);
@@ -28,6 +31,21 @@ function redir() {
         .catch(function () {
             console.log("error");
         });
+
+        fetch("http://localhost:3000/article/" + name.value.toUpperCase(), options)
+        .then((response) => {
+            return response.json();
+        }).then((dis) => {
+            dis.forEach(function (disp) {
+                if (name.value.toUpperCase() == disp.title.toUpperCase()) {
+                    console.log("dis " + disp.title)
+                    window.location = "http://localhost:5000/article?" + disp.title.toUpperCase();
+                }
+            })
+        })
+        .catch(function () {
+            console.log("error");
+        });
 }
 
 
@@ -46,6 +64,7 @@ const searchFunc = () => {
     let filter = document.getElementById('myInput').value.toUpperCase();
     let myTable = document.getElementById('myTable');
     let tr = myTable.getElementsByTagName('tr');
+    
     for (var i = 0; i < tr.length; i++) {
         let td = tr[i].getElementsByTagName('td')[0];
         if (td) {
@@ -74,7 +93,8 @@ function attachFetch(fetchAll) {
         alink.innerText = fetchAll.e_name;
     }
     else {
-        //logic of article
+        alink.setAttribute("href", "http://localhost:5000/article?" + fetchAll.title);
+        alink.innerText = fetchAll.title; 
     }
     td.appendChild(alink);
     tr.appendChild(td);
@@ -107,5 +127,17 @@ function load() {
         .catch(function () {
             console.log("error");
         });
+        fetch("http://localhost:3000/articleFetch",options)
+    .then((response) => {
+      return response.json();
+    })
+    .then((articles) => {
+      articles.forEach(function (article) {
+      attachFetch(article);        
+    })
+  })
+  .catch(function () {
+    console.log("error");
+  }); 
 
 }

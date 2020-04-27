@@ -12,11 +12,16 @@
   <script src="search.js"></script>
 </head>
 
-<body onload="load()">
+<body onload="call()">
   <header class="navbar1">
 
     <div class="navbar" id="myHeader">
-      <a href="http://localhost:5000/login">Login</a>
+      <div id="loginnav"><a href="http://localhost:5000/login">Login</a>
+        <a href="http://localhost:5000/login">Donate</a></div>
+      <div id="logoutnav">
+        <a href="http://localhost:3000/logout">Logout</a>
+        <a href="http://localhost:5000/dashboard">Donate</a>
+      </div>
 
       <div class="subnav">
         <button class="subnavbtn">About <i class="fa fa-caret-down"></i></button>
@@ -25,7 +30,7 @@
           <a href="#team">Team</a>
         </div>
       </div>
-      <a href="http://localhost:5000/login">Donate</a>
+    
       <div class="subnav">
         <button class="subnavbtn">Activities <i class="fa fa-caret-down"></i></button>
         <div class="subnav-content">
@@ -121,6 +126,11 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
+  function call()
+  {
+    load();
+    menu();
+  }
   window.onscroll = function () { myFunction() };
 
   var header = document.getElementById("myHeader");
@@ -132,42 +142,7 @@
       header.classList.remove("sticky");
     }
   }
-  function send() {
-    var fd = document.getElementById("feedback");
 
-    var formData = {
-      'name': fd.name.value,
-      'email': fd.email.value,
-      'msg': fd.msg.value,
-
-    }
-    fetch("http://localhost:3000/acceptFeedback", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-
-    })
-      .catch(function () {
-        console.log("error");
-      });
-
-  }
-
-
-
-  function openForm() {
-    document.getElementById("myForm").style.display = "block";
-  }
-
-  function closeForm() {
-    document.getElementById("myForm").style.display = "none";
-  }
-  const options = {
-    method: 'POST',
-    useNewUrlParser: true
-  }
   const a = document.getElementById("campaign");
   function attach(camp) {
     const f = document.createElement('figure');
@@ -248,37 +223,11 @@
 
   }
 
-  function load() {
-
-    fetch("http://localhost:3000/campFetch", options)
-      .then((response) => {
-        return response.json();
-      })
-      .then((campaign) => {
-        campaign.forEach(function (camp) {
-          attachFetch(camp);
-        })
-      })
-      .catch(function () {
-        console.log("error");
-      });
-    fetch("http://localhost:3000/eventFetch", options)
-      .then((response) => {
-        return response.json();
-      })
-      .then((events) => {
-        events.forEach(function (event) {
-          attachFetch(event);
-        })
-      })
-      .catch(function () {
-        console.log("error");
-      });
-
-  }
-
+  
 </script>
 <script src="search.js"></script>
+<script src="menu.js"></script>
+<script src="feedback.js"></script>
 
 
 </html>

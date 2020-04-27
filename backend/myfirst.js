@@ -41,7 +41,7 @@ app.use(cors());
 app.get('/awards', (function (req, res) {
   dbo.collection("awards").find({}, { projection: { _id: 0, item: 1, image: 1 } }).toArray(function (err, result) {
     if (err) throw err;
-    console.log(result);
+    //console.log(result);
     res.send(result);
   });
 
@@ -75,13 +75,13 @@ app.post('/register', (function (req, res) {
       dbo.collection("donor").insertOne({ Name: req.body.Name, Address: req.body.Address, Mobileno: req.body.Mobileno, Emailid: req.body.Emailid, Username: req.body.Username, Password: req.body.Password }, function (err, res) {
         if (err) throw err;
       });
-      console.log("inserted");
+     // console.log("inserted");
       res.send("http://localhost:5000/login");
 
     }
     else {
       res.send("http://localhost:5000/register");
-      console.log("not inserted");
+     // console.log("not inserted");
     }
 
   });
@@ -120,10 +120,10 @@ app.get('/donate/:amountdonated', (req, res) => {
   var Donor = dbo.collection("donor");
   Donor.update({ Username: sess.username }, { $addToSet: { accounthistory: { amount: data } } }, function (err, doc) {
     if (err) {
-      console.log("Something wrong when updating data!");
+      //console.log("Something wrong when updating data!");
     }
 
-    console.log("inserted");
+   // console.log("inserted");
   });
   res.redirect("http://localhost:5000/dashboard");
   res.end();
@@ -144,17 +144,18 @@ app.post('/pay', (req, res) => {
     if (err & err.type === "StripeCardError")
       console.log("your card was declined");
   });
-  console.log("your payment was successfull");
+  //console.log("your payment was successfull");
 
 
 });
 
 app.get('/logout', (req, res) => {
+  sess=undefined;
   req.session.destroy((err) => {
     if (err) {
       return console.log(err);
     }
-    res.redirect('/login');
+    res.redirect('http://localhost:5000/login');
   });
 
 });
@@ -163,7 +164,7 @@ app.get('/logout', (req, res) => {
 app.get('/articles', (req, res) => {
   dbo.collection("articles").find({}, { projection: { _id: 0, title: 1, author: 1, date: 1, category: 1, image: 1, content: 1 } }).toArray(function (err, result) {
     if (err) throw err;
-    console.log(result);
+    //console.log(result);
     res.send(result);
   });
 
@@ -175,7 +176,7 @@ app.get('/recentarticles', (req, res) => {
 
   dbo.collection("articles").find({}, { "sort": ['date', 'desc'] }).limit(3).toArray(function (err, result) {
     if (err) throw err;
-    console.log(result);
+   // console.log(result);
     res.send(result);
   });
 
@@ -187,7 +188,7 @@ app.get('/article/:title', (req, res) => {
 
   dbo.collection("articles").find({ title: req.params.title }, { projection: { title: 1, author: 1, date: 1, category: 1, image: 1, content: 1 } }).toArray(function (err, result) {
     if (err) throw err;
-    console.log("result is" + req.params.title);
+    //console.log("result is" + req.params.title);
     res.send(result);
   });
 
@@ -198,7 +199,7 @@ app.post('/comment', (req, res) => {
   var Article = dbo.collection("articles");
   Article.update({ title: req.body.article }, { $addToSet: { comments: { Email: req.body.email, comment: req.body.comment, date: Date() } } }, function (err, doc) {
     if (err) {
-      console.log("Something wrong when updating data!");
+     // console.log("Something wrong when updating data!");
     }
 
   });
@@ -210,7 +211,7 @@ app.post('/comment', (req, res) => {
 app.post('/comments', (req, res) => {
   dbo.collection("articles").find({ title: req.body.article }, { projection: { comments: 1 } }).toArray(function (err, result) {
     if (err) throw err;
-    console.log(result);
+   // console.log(result);
     res.send(result);
   });
 
@@ -226,13 +227,13 @@ app.post('/forumcomment', (req, res) => {
       update: { $inc: { sequence_value: 1 } },
       new: true
     });
-    console.log("data!" + sequenceDocument.sequence_value);
+  //  console.log("data!" + sequenceDocument.sequence_value);
     return sequenceDocument.sequence_value;
   }
   var f = dbo.collection("forum");
   f.update({ Name: req.body.forum }, { $addToSet: { comments: { "_id": getNextSequenceValue("commentid"), Email: req.body.email, comment: req.body.comment, date: Date() } } }, function (err, doc) {
     if (err) {
-      console.log("Something wrong when updating data!");
+     // console.log("Something wrong when updating data!");
     }
 
   });
@@ -244,7 +245,7 @@ app.post('/forumcomment', (req, res) => {
 app.post('/forumcomments', (req, res) => {
   dbo.collection("forum").find({ Name: req.body.forum }, { projection: { comments: 1 } }).toArray(function (err, result) {
     if (err) throw err;
-    console.log(result);
+   // console.log(result);
     res.send(result);
   });
 
@@ -266,12 +267,26 @@ app.post('/support', (req, res) => {
     }
     else {
 
-      console.log("not inserted");
+     // console.log("not inserted");
     }
 
   });
 
 });
+
+app.get('/menu', (req, res) => {
+ 
+  if(typeof sess === 'undefined'){
+    
+    res.send("false");
+  }
+  else
+  { console.log(sess.username);
+    res.send("true");
+  }
+
+});
+
 
 
 app.post("/campupcoming", function (req, res)
@@ -340,6 +355,15 @@ app.post("/eventFetch", function (req, res)
 {
    dbo.collection("events").find({},{ projection: { _id: 0,e_name:1,type:1} }).toArray(function(err, result) {
     if (err) throw err;
+    res.send(result);
+   });
+   
+});
+app.post("/articleFetch", function (req, res)
+{
+   dbo.collection("articles").find({},{ projection: { _id: 0,title:1} }).toArray(function(err, result) {
+    if (err) throw err;
+    console.log("in arrticle "+result);
     res.send(result);
    });
    
