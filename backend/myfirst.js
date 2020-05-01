@@ -7,6 +7,10 @@ var express = require('express');
 const bodyParser = require("body-parser");
 const session = require('express-session');
 var MongoClient = require('mongodb').MongoClient;
+var flash = require("connect-flash");
+var async = require("async");
+var nodemailer = require("nodemailer");
+var crypto = require("crypto");
 var url = "mongodb://localhost:27017/";
 var dbo;
 
@@ -26,9 +30,17 @@ var cors = require('cors');
 
 
 var app = express();
+app.use(flash());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.use(session({ secret: 'nottosay', saveUninitialized: true, resave: true }));
 app.use(bodyParser.json());
@@ -74,6 +86,7 @@ app.post('/register', (function (req, res) {
 
       dbo.collection("donor").insertOne({ Name: req.body.Name, Address: req.body.Address, Mobileno: req.body.Mobileno, Emailid: req.body.Emailid, Username: req.body.Username, Password: req.body.Password }, function (err, res) {
         if (err) throw err;
+        console.log("register"+result);
       });
      // console.log("inserted");
       res.send("http://localhost:5000/login");
@@ -287,6 +300,154 @@ app.get('/menu', (req, res) => {
 
 });
 
+app.post('/abc', (req, res) => {
+  console.log("hello");
+ 
+  req.flash('error', 'No account with that email address exists.');
+  return res.redirect('http://localhost:5000/temp');
+  req.end();
+});
+
+
+app.post('/forgot', function (req, res, next) {
+  async.waterfall([
+    function (done) {
+      crypto.randomBytes(20, function (err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    function (token, done) {
+      var email = req.body.email;
+      dbo.collection("donor").find({ Emailid: req.body.email }).toArray(function (err, result) {
+        if (err) throw err;
+        if (result.length == 0) {
+          req.flash('error', 'No account with that email address exists.');
+          return res.redirect('http://localhost:5000/forgot');
+        }
+        else {
+          var Donor = dbo.collection("donor");
+          Donor.update({ Emailid: req.body.email }, { $set: { resetPasswordToken: token, resetPasswordExpires: Date.now() + 3600000 } }, function (err, doc) {
+            if (err) {
+              // console.log("Something wrong when updating data!");
+            }
+            done(err, token, email);
+          });
+        }
+
+      });
+    },
+    function (token, email, done) {
+      var smtpTransport = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.GMAIL
+        }
+      });
+      var mailOptions = {
+        to: email,
+        from: 'evergreenngo123@gmail.com',
+        subject: 'Node.js Password Reset',
+        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function (err) {
+        console.log('mail sent');
+        req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.');
+        done(err, 'done');
+      });
+    }
+  ], function (err) {
+    if (err) return next(err);
+    res.redirect('http://localhost:5000/forgot');
+  });
+});
+
+app.get('/reset/:token', function (req, res) {
+  dbo.collection("donor").find({ resetPasswordToken: req.params.token }, { resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }).toArray(function (err, result) {
+
+    if (err) throw err;
+    if (result.length == 0) {
+      req.flash('error', 'Password reset token is invalid or has expired.');
+      return res.redirect('http://localhost:3000/forgot');
+    }
+    res.redirect('http://localhost:5000/reset?' + req.params.token);
+  });
+
+});
+
+app.post('/resett/:token', function (req, res,next) {
+
+  var email;
+  dbo.collection("donor").find({ resetPasswordToken: req.params.token }, { projection: { _id: 0, Emailid: 1 } }).toArray(function (err, result) {
+    result.forEach(function (a) {
+      email=a.Emailid;
+    });
+    if (err) throw err;
+     console.log(email);
+   
+  });
+  
+  async.waterfall([
+    function (done) {
+      dbo.collection("donor").find({ resetPasswordToken: req.params.token }, { resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }).toArray(function (err, result) {
+
+        if (err) throw err;
+        if (result.length == 0) {
+          req.flash('error', 'Password reset token is invalid or has expired.');
+          return res.redirect('back');
+        }
+        res.redirect('http://localhost:5000/reset');
+      });
+
+      if (req.body.password === req.body.confirm) {
+
+        var Donor = dbo.collection("donor");
+        Donor.update({ resetPasswordToken: req.params.token }, { $set: { Password: req.body.password, resetPasswordToken: undefined, resetPasswordExpires: undefined } }, function (err, doc) {
+          if (err) throw err;
+          done(err, email);
+        });
+
+      } else {
+        req.flash("error", "Passwords do not match.");
+        return res.redirect('back');
+      }
+
+    },
+    function (email, done) {
+      console.log("hello");
+      var smtpTransport = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.GMAIL
+        }
+      });
+      
+      var mailOptions = {
+        to: email,
+        from: 'evergreenngo123@gmail.com',
+        subject: 'Your password has been changed',
+        text: 'Hello,\n\n' +
+          'This is a confirmation that the password for your account ' + email + ' has just been changed.\n'
+      };
+
+      smtpTransport.sendMail(mailOptions, function (err) {
+        console.log('mail sent');
+        req.flash('success', 'Success! Your password has been changed.');
+        done(err, 'done');
+      });
+    }
+  ], function (err) {
+    if (err) return next(err);
+    res.redirect('http://localhost:5000/forgot');
+  });
+});
+
+
 
 
 app.post("/campupcoming", function (req, res)
@@ -333,15 +494,18 @@ app.post("/display_event.html/:url", function (req, res)
     res.send(result);
    });
 });
-app.post("/acceptFeedback", (req, res) => {
+app.post("/acceptFeedback/:url", (req, res) => {
    
    console.log(req.body.name);
    console.log(req.body.email);
    console.log(req.body.msg);
+   var url=req.params.url;
+   console.log("uellrm "+url);
   dbo.collection("feedbacks").insertOne({name: req.body.name,email: req.body.email,msg: req.body.msg},function(err,res){
   if(err)throw err;
   });
   console.log("inserted");
+  res.send("http://localhost:5000/"+url);
 });
 app.post("/campFetch", function (req, res)
 {
@@ -368,17 +532,22 @@ app.post("/articleFetch", function (req, res)
    });
    
 });
-app.post("/regisFor", (req, res) => {
-   
+app.post("/regisFor/:url", (req, res) => {
+  console.log(req.body.nameofEorC);
+  console.log(req.body.type);
    console.log(req.body.name);
    console.log(req.body.email);
    console.log(req.body.mob);
    console.log(req.body.city);
-  dbo.collection("regisfor").insertOne({name: req.body.name,email: req.body.email,mob: req.body.mob,city: req.body.city},function(err,res){
+   var url=req.params.url;
+   console.log("uellrm "+url);
+  dbo.collection("regisfor").insertOne({nameofEorC: req.body.nameofEorC,type: req.body.type,name: req.body.name,email: req.body.email,mob: req.body.mob,city: req.body.city},function(err,res){
   if(err)throw err;
   });
   console.log("inserted");
+  res.send("http://localhost:5000/"+url);
 });
+
 
 
 

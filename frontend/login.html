@@ -100,13 +100,13 @@
 
         <div class="form">
                 <form id="loginform" onsubmit="return dashboard()">
-                        username:<input type="text" name="user"></br>
-                        password:<input type="text" name="pass"></br>
+                        username:<input type="text" name="user" required></br>
+                        password:<br><input type="password" name="pass" required style="width: 100%;"></br>
                         <button class="button">Login</button></br>
                         <a href="http://localhost:5000/register">
                                 <input type="button" value="new user">
                         </a>
-                        <a href="https://www.w3schools.com">Fogot Password</a>
+                        <a href="http://localhost:5000/forgot">Fogot Password</a>
                 </form>
 
 

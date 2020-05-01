@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <button onclick="dashboard()">click me</button>
+  {{{flash}}}
+</body>
+
+<script>
+  
+  function dashboard() {
+         console.log("dfsdf");
+                  fetch("http://localhost:3000/abc", {
+                          method: 'POST',
+
+                  })
+                          .then((response) => {
+                                  return response.text();
+                          })
+                         
+                          .catch(function () {
+                                  console.log("error");
+                          });
+
+          }
+  
+</script>
+</html>

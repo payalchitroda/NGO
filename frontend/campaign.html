@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="search.js"></script>
+ 
 </head>
 
 <body onload="call()">
@@ -99,13 +99,13 @@
 
   <button class="open-button" onclick="openForm()">Suggestion</button>
   <div class="popup" id="myForm">
-    <form class="form-container" id="feedback" action="#">
+    <form class="form-container" id="feedback" onsubmit="return send()">
       <h1>Feedback</h1>
       <label for="msg" style="font-size: 60px;"><b>Message</b></label><br />
       <input type="text" name="name" required placeholder="Enter Name" style="height:55px;width: 100%;"><br />
       <input type="text" name="email" required placeholder="Enter email" style="height:55px;width: 100%;">
       <textarea placeholder="Type suggestion.." name="msg" required></textarea>
-      <button type="submit" class="btn" onclick="send()">Send</button>
+      <button type="submit" class="btn" >Send</button>
       <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
     </form>
   </div><br><br>
@@ -130,6 +130,7 @@
   {
     load();
     menu();
+    url();
   }
   window.onscroll = function () { myFunction() };
 

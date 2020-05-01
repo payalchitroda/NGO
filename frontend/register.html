@@ -98,25 +98,25 @@
     <div class="form">
         <form name="myform" id="myform" onsubmit="return check()">
             Name:
-            <input type="text" name="name" id="name">
+            <input type="text" name="name" id="name" required>
             </br>
             Address:
-            <input type="text" name="address" id="address">
+            <input type="text" name="address" id="address" required>
             </br>
             email id:
-            <input type="text" name="emailid" id="emailid">
+            <input type="text" name="emailid" id="emailid" required>
             </br>
             username:
-            <input type="text" name="username" id="username">
+            <input type="text" name="username" id="username" required>
             </br>
-            password:
-            <input type="text" name="password" id="password">
+            password:<br>
+            <input type="password" name="password" id="password" required style="width: 100%;">
             </br>
             confirm password:
-            <input type="text" name="cpassword" id="cpassword" onblur="checkEmail()">
+            <input type="password" name="cpassword" id="cpassword" onblur="checkEmail()" required style="width: 100%;">
             </br>
             Mobileno:
-            <input type="text" name="mobilno" id="mobileno">
+            <input type="text" name="mobilno" id="mobileno" required >
             </br>
             <input type="submit" value="submit">
         </form>
@@ -132,13 +132,15 @@
         function checkvalue() {
             var flag = "false";
             if (myform.name.value && myform.address.value && myform.mobileno.value && myform.emailid.value && myform.username.value && myform.password.value && myform.cpassword.value) {
-                flag = "true";
+              console.log("intrue func"); 
+              flag = "true";
 
             }
             else {
 
                 alert('Enter all fields!');
             }
+            console.log("in checkvalue");
             return flag;
 
         }
@@ -147,14 +149,20 @@
             if (myform.password.value != myform.cpassword.value) {
                 document.getElementById('cpassword').style.borderColor = "red";
                 alert('password doesn\'t match!');
+                console.log("in check email");
                 return false;
             }
-
+            console.log(flag);
+            return flag;
         }
         function check() {
 
             var flag = checkvalue();
             var flag2 = checkEmail();
+            console.log("beloe");
+            console.log("f1"+flag);
+            console.log("f2"+flag2);
+
             if (flag && flag2) {
                 var fd = document.getElementById("myform");
 
@@ -167,7 +175,7 @@
                     'Password': fd.password.value
 
                 }
-
+                  console.log("form"+formData);
                 fetch("http://localhost:3000/register", {
                     method: 'POST',
                     headers: {
@@ -194,41 +202,6 @@
             }
 
         }
-
-        function redir() {
-    var name = document.getElementById('myInput');
-    console.log("he;" + name.value);
-    fetch("http://localhost:3000/display_camp.html/" + name.value.toUpperCase(), options)
-      .then((response) => {
-        return response.json();
-      }).then((dis) => {
-        dis.forEach(function (disp) {
-          if (name.value.toUpperCase() == disp.c_name.toUpperCase()) {
-            console.log("dis " + disp.c_name)
-            window.location = "http://localhost:5000/display_camp?" + disp.c_name.toUpperCase();
-          }
-        })
-      })
-      .catch(function () {
-        console.log("error");
-      });
-    fetch("http://localhost:3000/display_event.html/" + name.value.toUpperCase(), options)
-      .then((response) => {
-        return response.json();
-      }).then((dis) => {
-        dis.forEach(function (disp) {
-          if (name.value.toUpperCase() == disp.e_name.toUpperCase()) {
-            window.location = "http://localhost:5000/display_event?" + disp.e_name.toUpperCase();
-          }
-        })
-      })
-      .catch(function () {
-        console.log("error");
-      });
-  }
-
-
-
 
     </script>
     <br/><br/><br>
